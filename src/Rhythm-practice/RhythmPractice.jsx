@@ -359,7 +359,10 @@ class RhythmPractice extends Component {
 		// console.log("play answer?", this.state.playAnswer);
 		return (
 			<div className="rhythmContainer">
-				<div className="title">IRREGULAR.EXPERT</div>
+				<div className="title">
+					IRREGULAR.EXPERT{" "}
+					<div style={{ fontSize: "10px" }}>v.1.1</div>
+				</div>
 				<div className="rp-instructions">
 					<div style={{ width: "1000px" }}>
 						<div>
