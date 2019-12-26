@@ -546,7 +546,8 @@ class RhythmPractice extends Component {
 					style={{
 						display: "flex",
 						justifyContent: "center",
-						alignItems: "center"
+						alignItems: "center",
+						marginTop: "50px"
 					}}
 				>
 					<div className="practiceMain">
