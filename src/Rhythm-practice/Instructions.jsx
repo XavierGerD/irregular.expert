@@ -31,11 +31,7 @@ class Instructions extends Component {
 							<div style={{ fontWeight: "bold" }}>
 								Instructions:{" "}
 							</div>
-							<div>
-								Enter a tempo. In bar mode, this is the quarter
-								note pulse. In tuplet mode, this is a half note
-								pulse.
-							</div>
+							<div>Enter a quarter note tempo.</div>
 							<div>
 								<span style={{ fontWeight: 600 }}>
 									Select the number of repetition for each bar

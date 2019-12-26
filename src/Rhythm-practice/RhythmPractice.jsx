@@ -25,7 +25,7 @@ class RhythmPractice extends Component {
 	state = {
 		tempoInput: "60",
 		repInput: "4",
-		size: [],
+		size: [3],
 		timeSignatures: [0, 0],
 		binaryFigures: [],
 		displayedTimeSignatures: [undefined, undefined],
@@ -117,20 +117,24 @@ class RhythmPractice extends Component {
 
 	//Assembles all components
 	getFigure = (size, currentFigures) => {
+		let value;
+		if (
+			this.state.mode === "bar" ||
+			(this.state.mode === "tuplet" && (size === 3 || size === 2))
+		) {
+			value = "eighth";
+		} else if (this.state.mode === "tuplet") {
+			value = "sixteenth";
+		}
 		// create temporary array where the rhythmic figure is stored as binary (1 = note, 0 = rest)
 		let binaryFigure = this.getRandomArray(size);
 		// translate the binary figure into a series of divs containing unicode characters
 		let unicodeFigure = [];
-		if (this.state.mode === "tuplet" && (size === 3 || size === 2)) {
-			renderBeamless(binaryFigure, unicodeFigure);
-			currentFigures.push(binaryFigure);
-			return unicodeFigure;
-		}
-		checkFirst(binaryFigure, unicodeFigure);
+		checkFirst(binaryFigure, unicodeFigure, value);
 		for (let i = 0; i < size - 2; i++) {
-			checkMid(binaryFigure, unicodeFigure, i);
+			checkMid(binaryFigure, unicodeFigure, i, value);
 		}
-		checkLast(binaryFigure, unicodeFigure);
+		checkLast(binaryFigure, unicodeFigure, value);
 		currentFigures.push(binaryFigure);
 		return unicodeFigure;
 	};
@@ -314,7 +318,7 @@ class RhythmPractice extends Component {
 					displayedFigures.push(
 						this.getFigure(timeSignatures[i], binaryFigures)
 					);
-					getTimeSig(2, displayedTimeSignatures, i);
+					getTimeSig(1, displayedTimeSignatures, i);
 					displayedTuplets.push(fillInTuplets(timeSignatures[i]));
 					if (timeSignatures[i] === 4) {
 						displayedTuplets[i] = null;
@@ -409,7 +413,7 @@ class RhythmPractice extends Component {
 									onClick={event => {
 										this.checkBoxChecker(event, 3);
 									}}
-									defaultChecked={this.state.checked3}
+									defaultChecked={true}
 									className="timeSigButton"
 									id="timeSigButton3"
 								/>{" "}
