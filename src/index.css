@@ -8,3 +8,86 @@
 	display: flex;
 	justify-content: center;
 }
+
+.checkbox {
+	appearance: none;
+	height: 15px;
+	width: 15px;
+	border: 2px solid black;
+	border-radius: 4px;
+	margin-right: 10px;
+}
+
+.checkbox:hover {
+	background-color: #e6e6e6;
+}
+
+.checkbox:active,
+.regular-checkbox:checked:active {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+		inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox:checked {
+	background-color: black;
+}
+
+.checkbox:checked:after {
+	content: "\2714";
+	font-size: 14px;
+	position: absolute;
+	top: 0px;
+	left: 3px;
+	color: #99a1a7;
+}
+
+.checkbox:focus {
+	outline: none;
+}
+
+.radiobutton {
+	appearance: none;
+	height: 15px;
+	width: 15px;
+	border: 2px solid black;
+	border-radius: 50%;
+	margin-right: 10px;
+}
+
+.radiobutton:active,
+.regular-checkbox:checked:active {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+		inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.radiobutton:checked {
+	background-color: black;
+}
+
+.radiobutton:checked:after {
+	content: "\2714";
+	font-size: 14px;
+	position: absolute;
+	top: 0px;
+	left: 3px;
+	color: #99a1a7;
+}
+
+.radiobutton:focus {
+	outline: none;
+}
+
+.radiobutton:hover {
+	background-color: #e6e6e6;
+}
+
+.rp-inputBox {
+	border-radius: 5px;
+	font-family: "Raleway", sans-serif;
+	margin-left: 7px;
+	width: 40px;
+}
+
+.rp-inputBox:focus {
+	outline: none;
+}

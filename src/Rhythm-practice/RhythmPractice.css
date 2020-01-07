@@ -76,13 +76,6 @@
 	padding-top: 10px;
 }
 
-.rp-inputBox {
-	border-radius: 5px;
-	font-family: "Raleway", sans-serif;
-	margin-left: 7px;
-	width: 40px;
-}
-
 .practiceMain {
 	padding-top: 50px;
 	position: relative;
@@ -111,10 +104,6 @@
 	display: flex;
 	align-items: center;
 	flex: auto;
-}
-
-.timeSigButton {
-	margin-right: 15px;
 }
 
 .rp-bars {

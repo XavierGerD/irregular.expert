@@ -8,13 +8,8 @@ import {
 	singleStaff,
 	timeSignatureCodes
 } from "../UnicodeAssignment.js";
-import { Howl } from "howler";
 import Instructions from "./Instructions.jsx";
-
-let blip01 = new Howl({ src: ["/Sons/metronome_low.wav"] });
-let blip02 = new Howl({ src: ["/Sons/metronome_high.wav"] });
-let clap = new Howl({ src: ["/Sons/hand_clap.wav"] });
-let countdownSound = new Howl({ src: ["/Sons/countdown.wav"] });
+import { blip01, blip02, clap, countdownSound } from "../Audio.js";
 
 class RhythmPractice extends Component {
 	state = {
@@ -350,6 +345,31 @@ class RhythmPractice extends Component {
 		});
 	};
 
+	createValueSelectors = () => {
+		let values = [3, 4, 5, 6, 7];
+		let ret = values.map(value => {
+			let checked = false;
+			if (value === 3) {
+				checked = true;
+			}
+			return (
+				<div>
+					{value}
+					<input
+						type="checkbox"
+						onClick={event => {
+							this.checkBoxChecker(event, value);
+						}}
+						defaultChecked={checked}
+						className="checkbox"
+						id={"timeSigButton" + value}
+					/>
+				</div>
+			);
+		});
+		return ret;
+	};
+
 	render = () => {
 		// console.log("play answer?", this.state.playAnswer);
 		return (
@@ -401,56 +421,7 @@ class RhythmPractice extends Component {
 							</div>
 							<div className="rp-controlitem">Values:</div>
 							<div className="rp-controlitem">
-								3
-								<input
-									type="checkbox"
-									onClick={event => {
-										this.checkBoxChecker(event, 3);
-									}}
-									defaultChecked={true}
-									className="timeSigButton"
-									id="timeSigButton3"
-								/>{" "}
-								4
-								<input
-									type="checkbox"
-									onClick={event => {
-										this.checkBoxChecker(event, 4);
-									}}
-									defaultChecked={this.state.checked4}
-									className="timeSigButton"
-									id="timeSigButton4"
-								/>{" "}
-								5
-								<input
-									type="checkbox"
-									onClick={event => {
-										this.checkBoxChecker(event, 5);
-									}}
-									defaultChecked={this.state.checked5}
-									className="timeSigButton"
-									id="timeSigButton5"
-								/>{" "}
-								6
-								<input
-									type="checkbox"
-									onClick={event => {
-										this.checkBoxChecker(event, 6);
-									}}
-									defaultChecked={this.state.checked6}
-									className="timeSigButton"
-									id="timeSigButton6"
-								/>{" "}
-								7
-								<input
-									type="checkbox"
-									onClick={event => {
-										this.checkBoxChecker(event, 7);
-									}}
-									defaultChecked={this.state.checked6}
-									className="timeSigButton"
-									id="timeSigButton6"
-								/>{" "}
+								{this.createValueSelectors()}
 							</div>
 						</div>
 						<div
@@ -472,6 +443,7 @@ class RhythmPractice extends Component {
 										type="radio"
 										name="modeselect"
 										value="bar"
+										className="radiobutton"
 										checked={this.state.mode === "bar"}
 										onChange={e => {
 											this.modeChangeHandler(e);
@@ -484,6 +456,7 @@ class RhythmPractice extends Component {
 										type="radio"
 										name="modeselect"
 										value="tuplet"
+										className="radiobutton"
 										checked={this.state.mode === "tuplet"}
 										onChange={e => {
 											this.modeChangeHandler(e);
@@ -500,7 +473,7 @@ class RhythmPractice extends Component {
 										this.clickFrequencyChecker(event);
 									}}
 									defaultChecked={false}
-									className="timeSigButton"
+									className="checkbox"
 									id="clickFrequency"
 								/>
 							</div>
@@ -513,7 +486,7 @@ class RhythmPractice extends Component {
 										this.allowEmptyBarChecker(event);
 									}}
 									defaultChecked={false}
-									className="timeSigButton"
+									className="checkbox"
 									id="clickFrequency"
 								/>
 							</div>
@@ -526,7 +499,7 @@ class RhythmPractice extends Component {
 										this.playAnswerChecker(event);
 									}}
 									defaultChecked={false}
-									className="timeSigButton"
+									className="checkbox"
 									id="clickFrequency"
 								/>
 							</div>

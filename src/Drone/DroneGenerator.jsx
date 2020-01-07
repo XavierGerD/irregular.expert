@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Tone from "tone";
+import Metronome from "./Metronome.jsx";
 import "./DroneGenerator.css";
 
 class DroneGenerator extends Component {
@@ -8,15 +9,16 @@ class DroneGenerator extends Component {
 		this.state = {
 			synth: new Tone.Synth().toMaster(),
 			octave: 4,
+			wave: "triangle",
 			currentNote: ""
 		};
 	}
 	componentDidMount = () => {
 		let state = { ...this.state };
-		state.volume = new Tone.Volume().toMaster();
-		state.volume.volume.value = 0;
+		state.volume = new Tone.Volume(0);
 		state.synth.chain(state.volume, Tone.Master);
-		console.log("state before set", state);
+		state.synth.oscillator.type = this.state.wave;
+		Tone.Master.volume.value = -15;
 		this.setState(state);
 	};
 
@@ -28,7 +30,22 @@ class DroneGenerator extends Component {
 	};
 
 	setOctave = (event, value) => {
-		this.setState({ octave: value });
+		let newNote = this.state.currentNote.substring(
+			0,
+			this.state.currentNote.length - 1
+		);
+		newNote = newNote + value;
+		this.setState({ octave: value }, () => {
+			this.setNote(event, newNote);
+		});
+	};
+
+	setWave = (event, value) => {
+		event.preventDefault();
+		let state = { ...this.state };
+		state.synth.oscillator.type = value;
+		state.wave = value;
+		this.setState(state, console.log("state", this.state));
 	};
 
 	stopMe = event => {
@@ -36,26 +53,135 @@ class DroneGenerator extends Component {
 		this.state.synth.triggerRelease();
 	};
 
-	createOctaveSelectors = () => {
-		let ret = [];
-		for (let i = 2; i < 6; i++) {
-			ret.push(
-				<div
-					className="octave-selector"
-					onClick={event => this.setOctave(event, i)}
-				>
-					{i}
-				</div>
-			);
-		}
-		return ret;
-	};
-
 	adjustVolume = event => {
 		event.preventDefault();
 		let state = { ...this.state };
 		state.volume.volume.value = event.target.value;
 		this.setState({ state });
+	};
+
+	createWaveSelectors = () => {
+		let waveforms = ["sine", "square", "triangle", "sawtooth"];
+		let ret = waveforms.map(waveform => {
+			if (this.state.wave === waveform) {
+				return (
+					<div
+						className="waveselector-selected"
+						onClick={event => {
+							this.setWave(event, waveform);
+						}}
+					>
+						{waveform.charAt(0).toUpperCase() + waveform.slice(1)}
+					</div>
+				);
+			} else {
+				return (
+					<div
+						className="waveselector"
+						onClick={event => {
+							this.setWave(event, waveform);
+						}}
+					>
+						{waveform.charAt(0).toUpperCase() + waveform.slice(1)}
+					</div>
+				);
+			}
+		});
+		return ret;
+	};
+
+	createOctaveSelectors = () => {
+		let ret = [];
+		for (let i = 2; i < 6; i++) {
+			if (this.state.octave === i) {
+				ret.push(
+					<div
+						className="octave-selector-selected"
+						onClick={event => this.setOctave(event, i)}
+					>
+						{i}
+					</div>
+				);
+			} else {
+				ret.push(
+					<div
+						className="octave-selector"
+						onClick={event => this.setOctave(event, i)}
+					>
+						{i}
+					</div>
+				);
+			}
+		}
+		return ret;
+	};
+
+	createWhiteNotes = () => {
+		let notes = ["C", "D", "E", "F", "G", "A", "B"];
+		let currentNote = this.state.currentNote;
+		currentNote = currentNote.replace(/[0-9]/g, "");
+		let ret = notes.map(note => {
+			if (currentNote === note) {
+				return (
+					<div
+						className="whitenotebutton-selected"
+						onClick={event =>
+							this.setNote(event, note + this.state.octave)
+						}
+					>
+						{note}
+					</div>
+				);
+			} else {
+				return (
+					<div
+						className="whitenotebutton"
+						onClick={event =>
+							this.setNote(event, note + this.state.octave)
+						}
+					>
+						{note}
+					</div>
+				);
+			}
+		});
+
+		return ret;
+	};
+
+	createBlackNotes = () => {
+		let notes = ["Db", "Eb", "spacer", "GB", "Ab", "Bb"];
+		let currentNote = this.state.currentNote;
+		currentNote = currentNote.replace(/[0-9]/g, "");
+		let ret = notes.map(note => {
+			if (currentNote === note) {
+				return (
+					<div
+						className="blacknotebutton-selected"
+						onClick={event =>
+							this.setNote(event, note + this.state.octave)
+						}
+					>
+						{note}
+					</div>
+				);
+			} else if (note === "spacer") {
+				return <div className="notespacer" />;
+			} else {
+				return (
+					<div
+						className="blacknotebutton"
+						onClick={event =>
+							this.setNote(event, note + this.state.octave)
+						}
+					>
+						{note}
+					</div>
+				);
+			}
+		});
+
+		return ret;
 	};
 
 	render = () => {
@@ -68,12 +194,21 @@ class DroneGenerator extends Component {
 					Simply click on the note you choose. You can also change the
 					octave.
 				</div>
-				<div style={{ display: "flex", marginBottom: "20px" }}>
-					<div className="select-container">
-						<div style={{ marginBottom: "10px" }}>OCTAVE</div>
-						<div style={{ display: "flex" }}>
-							{this.createOctaveSelectors()}
+				<div>
+					<div
+						style={{
+							display: "flex",
+							marginBottom: "20px",
+							justifyContent: "center"
+						}}
+					>
+						<div className="select-container">
+							<div style={{ marginBottom: "10px" }}>OCTAVE</div>
+							<div style={{ display: "flex" }}>
+								{this.createOctaveSelectors()}
+							</div>
 						</div>
+						<Metronome />
 					</div>
 					<div className="select-container">
 						Volume
@@ -89,110 +224,14 @@ class DroneGenerator extends Component {
 							}}
 						/>
 					</div>
+					<div style={{ display: "flex", marginBottom: "20px" }}>
+						{this.createWaveSelectors()}
+					</div>
 				</div>
 				<div style={{ marginBottom: "20px" }}>
-					<div className="blacknotes">
-						<div
-							className="blacknotebutton"
-							onClick={event =>
-								this.setNote(event, "Db" + this.state.octave)
-							}
-						>
-							C#/ Db
-						</div>
-						<div
-							className="blacknotebutton"
-							onClick={event =>
-								this.setNote(event, "Eb" + this.state.octave)
-							}
-						>
-							D#/ Eb
-						</div>
-						<div className="notespacer" />
-						<div
-							className="blacknotebutton"
-							onClick={event =>
-								this.setNote(event, "Gb" + this.state.octave)
-							}
-						>
-							F#/ Gb
-						</div>
-						<div
-							className="blacknotebutton"
-							onClick={event =>
-								this.setNote(event, "Ab" + this.state.octave)
-							}
-						>
-							G#/ Ab
-						</div>
-						<div
-							className="blacknotebutton"
-							onClick={event =>
-								this.setNote(event, "Bb" + this.state.octave)
-							}
-						>
-							A#/ Bb
-						</div>
-					</div>
+					<div className="blacknotes">{this.createBlackNotes()}</div>
 
-					<div className="whitenotes">
-						<div
-							className="whitenotebutton"
-							onClick={event =>
-								this.setNote(event, "C" + this.state.octave)
-							}
-						>
-							C
-						</div>
-						<div
-							className="whitenotebutton"
-							onClick={event =>
-								this.setNote(event, "D" + this.state.octave)
-							}
-						>
-							D
-						</div>
-						<div
-							className="whitenotebutton"
-							onClick={event =>
-								this.setNote(event, "E" + this.state.octave)
-							}
-						>
-							E
-						</div>
-						<div
-							className="whitenotebutton"
-							onClick={event =>
-								this.setNote(event, "F" + this.state.octave)
-							}
-						>
-							F
-						</div>
-						<div
-							className="whitenotebutton"
-							onClick={event =>
-								this.setNote(event, "G" + this.state.octave)
-							}
-						>
-							G
-						</div>
-						<div
-							className="whitenotebutton"
-							onClick={event =>
-								this.setNote(event, "A" + this.state.octave)
-							}
-						>
-							A
-						</div>
-						<div
-							className="whitenotebutton"
-							onClick={event =>
-								this.setNote(event, "B" + this.state.octave)
-							}
-						>
-							B
-						</div>
-					</div>
+					<div className="whitenotes">{this.createWhiteNotes()}</div>
 				</div>
 				<button id="stop" onClick={this.stopMe}>
 					Stop!

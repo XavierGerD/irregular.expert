@@ -14,7 +14,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding-top: 60px;
+	/* padding-top: 60px; */
 }
 
 .whitenotebutton {
@@ -31,6 +31,22 @@
 	margin-right: 2px;
 	background-color: white;
 	color: black;
+}
+
+.whitenotebutton-selected {
+	font-family: "Raleway", sans-serif;
+	font-size: 25px;
+	font-weight: bold;
+	width: 60px;
+	height: 200px;
+	border: 2px solid black;
+	border-radius: 6px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	margin-right: 2px;
+	background-color: #6b6b6b;
+	color: white;
 }
 
 .whitenotebutton:hover {
@@ -53,6 +69,25 @@
 	color: white;
 	word-wrap: break-word;
 	pointer-events: all;
+}
+
+.blacknotebutton-selected {
+	font-family: "Raleway", sans-serif;
+	font-size: 25px;
+	font-weight: bold;
+	width: 50px;
+	height: 130px;
+	border: 2px solid black;
+	border-radius: 6px;
+	display: flex;
+	align-items: flex-end;
+	justify-content: center;
+	margin-right: 11px;
+	background-color: black;
+	color: white;
+	word-wrap: break-word;
+	pointer-events: all;
+	background-color: #6b6b6b;
 }
 
 .blacknotebutton:hover {
@@ -94,7 +129,57 @@
 	margin-right: 10px;
 }
 
+.octave-selector-selected {
+	font-family: "Raleway", sans-serif;
+	font-size: 25px;
+	font-weight: bold;
+	height: 40px;
+	width: 40px;
+	border: 2px solid black;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 10px;
+	background-color: black;
+	color: white;
+}
+
 .octave-selector:hover {
+	background-color: #e6e6e6;
+}
+
+.waveselector {
+	font-family: "Raleway", sans-serif;
+	font-size: 25px;
+	font-weight: bold;
+	height: 40px;
+	width: 140px;
+	border: 2px solid black;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 10px;
+}
+
+.waveselector-selected {
+	font-family: "Raleway", sans-serif;
+	font-size: 25px;
+	font-weight: bold;
+	height: 40px;
+	width: 140px;
+	border: 2px solid black;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 10px;
+	background-color: black;
+	color: white;
+}
+
+.waveselector:hover {
 	background-color: #e6e6e6;
 }
 
@@ -136,4 +221,8 @@
 	background-color: white;
 	border: 2px solid black;
 	border-radius: 5px;
+}
+
+.slider::-webkit-slider-thumb:hover {
+	background-color: #e6e6e6;
 }
