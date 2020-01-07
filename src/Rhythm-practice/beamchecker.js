@@ -4,7 +4,7 @@ import {
 	beamCodes,
 	flagCodes,
 	restCodes
-} from "./UnicodeAssignment.js";
+} from "../UnicodeAssignment.js";
 
 //Checks to see which beams for the first note
 let checkFirst = (i, e, value) => {

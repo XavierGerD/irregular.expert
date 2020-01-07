@@ -16,13 +16,6 @@
 	user-select: none;
 }
 
-.title {
-	font-family: "Raleway", sans-serif;
-	font-size: 40px;
-	font-weight: bold;
-	display: flex;
-}
-
 #start {
 	width: 200px;
 	height: 100px;
@@ -38,6 +31,14 @@
 	margin-right: 10px;
 }
 
+#start:focus {
+	outline: none;
+}
+
+#start:hover {
+	background-color: #0ea170;
+}
+
 #stop {
 	width: 200px;
 	height: 100px;
@@ -50,6 +51,14 @@
 	border: none;
 	box-shadow: 3px 3px #631d19;
 	margin-bottom: 5px;
+}
+
+#stop:focus {
+	outline: none;
+}
+
+#stop:hover {
+	background-color: #d43026;
 }
 
 .rhythmContainer {
@@ -195,15 +204,6 @@
 	width: 15px;
 }
 
-.rp-instructions {
-	width: 100%;
-	word-wrap: break-word;
-	margin-top: 30px;
-	font-family: "Raleway", sans-serif;
-	display: flex;
-	justify-content: center;
-}
-
 .rp-quicktip {
 	background-color: white;
 	font-family: "Raleway", sans-serif;
@@ -221,7 +221,7 @@
 		height: 60px;
 	}
 
-	.rp-instructions {
+	.instructions {
 		font-size: 14px;
 		width: 90vw;
 	}

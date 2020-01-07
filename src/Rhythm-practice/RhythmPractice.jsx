@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import {
-	checkFirst,
-	checkLast,
-	checkMid,
-	renderBeamless
-} from "./beamchecker.js";
+import { checkFirst, checkLast, checkMid } from "./beamchecker.js";
 import { fillInTuplets } from "./tupletBracketChecker.js";
 import "./RhythmPractice.css";
 import getTimeSig from "./render.js";
@@ -12,8 +7,8 @@ import {
 	barlines,
 	singleStaff,
 	timeSignatureCodes
-} from "./UnicodeAssignment.js";
-import { Howl, Howler } from "howler";
+} from "../UnicodeAssignment.js";
+import { Howl } from "howler";
 import Instructions from "./Instructions.jsx";
 
 let blip01 = new Howl({ src: ["/Sons/metronome_low.wav"] });
@@ -359,15 +354,11 @@ class RhythmPractice extends Component {
 		// console.log("play answer?", this.state.playAnswer);
 		return (
 			<div className="rhythmContainer">
-				<div className="title">
-					IRREGULAR.EXPERT{" "}
-					<div style={{ fontSize: "10px" }}>v.1.1</div>
-				</div>
-				<div className="rp-instructions">
+				<div className="instructions">
 					<div style={{ width: "1000px" }}>
 						<div>
-							This app allows musicians to practice all types of
-							regular and irregular rhythmic groups, as well as
+							This app allows you to practice all types of regular
+							and irregular rhythmic groups, as well as
 							alternating between different values. It works by
 							randomly generating an endless number of rhythmic
 							figures. Simply start the app and clap your hands or

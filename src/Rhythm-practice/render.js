@@ -1,4 +1,4 @@
-import { timeSignatureCodes } from "./UnicodeAssignment.js";
+import { timeSignatureCodes } from "../UnicodeAssignment.js";
 
 let getTimeSig = (e, sig, i) => {
 	switch (e) {

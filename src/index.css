@@ -1,1 +1,10 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway&display=swap");
+
+.instructions {
+	width: 100%;
+	word-wrap: break-word;
+	margin-top: 30px;
+	font-family: "Raleway", sans-serif;
+	display: flex;
+	justify-content: center;
+}

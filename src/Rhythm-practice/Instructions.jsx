@@ -26,7 +26,7 @@ class Instructions extends Component {
 					{this.state.clicked ? "Hide" : "Show"} instructions
 				</div>
 				{this.state.clicked ? (
-					<div className="rp-instructions">
+					<div className="instructions">
 						<div style={{ width: "1000px" }}>
 							<div style={{ fontWeight: "bold" }}>
 								Instructions:{" "}
