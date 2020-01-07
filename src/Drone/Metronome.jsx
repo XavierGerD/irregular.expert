@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Looper from "./Looper.jsx";
 import "./Metronome.css";
 import { blip01, blip02, clap, countdownSound } from "../Audio.js";
 
@@ -7,7 +8,8 @@ export default class Metronome extends Component {
 		super();
 		this.state = {
 			tempoInput: 60,
-			lastClick: new Date() / 1
+			lastClick: new Date() / 1,
+			active: false
 		};
 	}
 

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, BrowserRouter, Link } from "react-router-dom";
 import RhythmPractice from "./Rhythm-practice/RhythmPractice.jsx";
-import DroneGenerator from "./Drone/DroneGenerator.jsx";
+import DroneGenerator from "./Drone/DroneGenerator";
 import NavBar from "./NavBar.jsx";
 
 class App extends Component {
