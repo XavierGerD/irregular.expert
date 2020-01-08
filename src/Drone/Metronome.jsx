@@ -8,8 +8,7 @@ export default class Metronome extends Component {
 		super();
 		this.state = {
 			tempoInput: 60,
-			lastClick: new Date() / 1,
-			active: false
+			lastClick: new Date() / 1
 		};
 	}
 

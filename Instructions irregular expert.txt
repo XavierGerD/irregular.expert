@@ -1,4 +1,0 @@
-1. Connect a ton serveur avec WinSCP
-2. Upload ton site
-3. Build avec npm build
-4. sudo cp -r irregular-expert/build/* /var/www/irregular.expert/

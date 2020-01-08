@@ -5,7 +5,7 @@ import "./DroneGenerator.css";
 
 export default class DroneGenerator extends Component {
 	state = {
-		mode: "looper"
+		mode: "simple"
 	};
 
 	handleSimple = () => {

@@ -11,7 +11,7 @@ export default class NavBar extends Component {
 					<div style={{ fontSize: "10px" }}>v.2.0</div>
 				</div>
 
-				<div style={{ display: "flex" }}>
+				<div style={{ display: "flex", justifyContent: "center" }}>
 					<div className="menuitem">
 						<Link to={"/drone"}>Drone </Link>
 					</div>
