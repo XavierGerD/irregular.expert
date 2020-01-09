@@ -36,6 +36,10 @@ class RhythmPractice extends Component {
 	countDownFrame;
 	playAndCountFrame;
 
+	componentWillUnmount = () => {
+		this.stopExercise();
+	};
+
 	tempoInputHandler = e => {
 		this.setState({ tempoInput: e.target.value });
 	};

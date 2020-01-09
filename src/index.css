@@ -87,7 +87,6 @@
 }
 
 .checkbox:checked:after {
-	content: "\2714";
 	font-size: 14px;
 	position: absolute;
 	top: 0px;
@@ -119,7 +118,6 @@
 }
 
 .radiobutton:checked:after {
-	content: "\2714";
 	font-size: 14px;
 	position: absolute;
 	top: 0px;

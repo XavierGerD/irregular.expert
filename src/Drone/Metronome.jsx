@@ -14,6 +14,10 @@ export default class Metronome extends Component {
 
 	playFrame;
 
+	componentWillUnmount = () => {
+		this.stop();
+	};
+
 	tempoInputHandler = event => {
 		this.setState({ tempoInput: event.target.value });
 	};

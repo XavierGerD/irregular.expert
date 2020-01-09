@@ -23,6 +23,10 @@ export default class Simple extends Component {
 		this.setState(state);
 	};
 
+	componentWillUnmount = () => {
+		this.stopMe();
+	};
+
 	setNote = (event, value) => {
 		event.preventDefault();
 		this.setState({ currentNote: value }, () => {
@@ -50,7 +54,7 @@ export default class Simple extends Component {
 	};
 
 	stopMe = event => {
-		event.preventDefault();
+		// event.preventDefault();
 		this.state.synth.triggerRelease();
 		this.setState({ currentNote: "" });
 	};

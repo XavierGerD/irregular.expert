@@ -29,6 +29,10 @@ export default class Looper extends Component {
 		this.setState(state);
 	};
 
+	componentWillUnmount = () => {
+		this.stopMe();
+	};
+
 	addEvent = () => {
 		let events = [...this.state.events];
 		if (events.length < 4) {
@@ -62,6 +66,11 @@ export default class Looper extends Component {
 		this.setState({ events });
 	};
 
+	tempoInputHandler = event => {
+		let tempoInput = parseInt(event.target.value);
+		this.setState({ tempoInput });
+	};
+
 	setWave = (event, value) => {
 		event.preventDefault();
 		let state = { ...this.state };
@@ -71,7 +80,7 @@ export default class Looper extends Component {
 	};
 
 	stopMe = event => {
-		event.preventDefault();
+		// event.preventDefault();
 		this.state.synth.triggerRelease();
 		cancelAnimationFrame(this.playFrame);
 		cancelAnimationFrame(this.countDownFrame);
