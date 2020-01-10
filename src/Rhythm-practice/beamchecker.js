@@ -17,8 +17,12 @@ let checkFirst = (figure, unicodeFigure, value, mode) => {
 		);
 		//if the first beat is active but the second beat is a rest, add a flag
 	} else if (figure[0] === 1 && figure[1] === 0) {
+		let style = {};
+		if (mode === "bar") {
+			style = { marginRight: "34px" };
+		}
 		unicodeFigure.push(
-			<div className="rp-note" style={{ marginRight: "34px" }}>
+			<div className="rp-note" style={style}>
 				{completeNotes.beamless}
 
 				{mode === "bar" ? null : (
