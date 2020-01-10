@@ -17,7 +17,7 @@ class App extends Component {
 		return (
 			<BrowserRouter>
 				<NavBar />
-				<Detune />
+				{/* <Detune /> */}
 				<Route exact={true} path="/" render={this.renderRhythm} />
 				<Route exact={true} path="/drone" render={this.renderDrone} />
 			</BrowserRouter>

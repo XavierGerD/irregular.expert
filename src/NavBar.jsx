@@ -8,7 +8,7 @@ export default class NavBar extends Component {
 			<div className="navmain">
 				<div className="title">
 					IRREGULAR.EXPERT{" "}
-					<div style={{ fontSize: "10px" }}>v.2.0.1</div>
+					<div style={{ fontSize: "10px" }}>v.2.1</div>
 				</div>
 
 				<div style={{ display: "flex", justifyContent: "center" }}>
