@@ -34,6 +34,7 @@ class RhythmPractice extends Component {
 		playEveryEighth: false
 	};
 
+	//reference variables for the requestAnimationFrames
 	countDownFrame;
 	playAndCountFrame;
 
@@ -77,9 +78,7 @@ class RhythmPractice extends Component {
 				}
 			});
 		}
-		this.setState({ size }, () => {
-			console.log("state", this.state);
-		});
+		this.setState({ size });
 	};
 
 	clickFrequencyChecker = e => {
@@ -176,23 +175,32 @@ class RhythmPractice extends Component {
 		let displayedTimeSignatures = [...this.state.displayedTimeSignatures];
 		let displayedTuplets = [...this.state.displayedTuplets];
 		let timeSignatures = [...this.state.timeSignatures];
-		// get a random time signature from the size array,
+		// get a random time signature/tuplet size from the size array,
 		let e = this.getRandomTimeSig(this.state.size);
-		// remove the first figure and generate a new one, remove first time signature and generate new one
+		// remove the first binary figure
 		binaryFigures.shift();
+		//remove the first unicode figure
 		displayedFigures.shift();
+		//generate a new unicode figure based on the time signature/tuplet size obtained above
 		displayedFigures.push(this.getFigure(e, binaryFigures));
+		//add the new time signature to the state
 		timeSignatures.shift();
 		timeSignatures.push(e);
 		if (this.state.mode === "bar") {
+			//if in bar mode, remove the first unicode time signature
 			displayedTimeSignatures.shift();
+			//get the new unicode time signature
 			getTimeSig(e, displayedTimeSignatures, 1, this.state.mode);
+			//store the time signature as the sum of the subdivisions
 			timeSignatures[1] = timeSignatures[1].reduce(reducer, 0);
 		}
 
 		if (this.state.mode === "tuplet") {
+			//if in tuplet mode, remove the first unicode tuplet
 			displayedTuplets.shift();
+			//push new unicode tuplet
 			displayedTuplets.push(fillInTuplets(e));
+			//if tuplet is 4, don't shot tuplet brackets
 			if (e[0] === 4) {
 				displayedTuplets[1] = null;
 			}
