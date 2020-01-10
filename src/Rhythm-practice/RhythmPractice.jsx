@@ -9,13 +9,14 @@ import {
 	timeSignatureCodes
 } from "../UnicodeAssignment.js";
 import Instructions from "./Instructions.jsx";
+import reducer from "./reducer.js";
 import { blip01, blip02, clap, countdownSound } from "../Audio.js";
 
 class RhythmPractice extends Component {
 	state = {
 		tempoInput: "60",
 		repInput: "4",
-		size: [3],
+		size: [[3]],
 		timeSignatures: [0, 0],
 		binaryFigures: [],
 		displayedTimeSignatures: [undefined, undefined],
@@ -53,15 +54,32 @@ class RhythmPractice extends Component {
 		this.setState({ mode });
 	};
 
-	checkBoxChecker = (e, i) => {
+	checkBoxChecker = (event, value) => {
 		let size = [...this.state.size];
-		if (e.target.checked) {
-			size.push(i);
+		//if box is being checked, push the value to the size array
+		if (event.target.checked) {
+			size.push(value);
 		} else {
-			let b = size.indexOf(i);
-			size.splice(b, 1);
+			//if the box is being unchecked, iterate through the size array and compare the values in subarrays to match with the one provided by the checkbox
+			size.forEach((currentSize, i) => {
+				let ret = true;
+				if (currentSize.length === value.length) {
+					currentSize.forEach((figure, j) => {
+						if (figure !== value[j]) {
+							//if these is any mismatch, ret is false
+							ret = false;
+						}
+					});
+					if (ret) {
+						//if everything matches, remove the subdivisions array from size
+						size.splice(i, 1);
+					}
+				}
+			});
 		}
-		this.setState({ size });
+		this.setState({ size }, () => {
+			console.log("state", this.state);
+		});
 	};
 
 	clickFrequencyChecker = e => {
@@ -78,6 +96,11 @@ class RhythmPractice extends Component {
 
 	getRandomTimeSig = size => {
 		let randomSig = size[Math.floor(Math.random() * size.length)];
+		if (this.state.mode === "tuplet") {
+			randomSig = [randomSig.reduce(reducer, 0)];
+		}
+
+		console.log("random time sigs", randomSig);
 		return randomSig;
 	};
 
@@ -89,24 +112,25 @@ class RhythmPractice extends Component {
 	};
 
 	//Adds values to an array
-	getRandomArray = max => {
-		let temp = [];
+	getBinaryFigure = max => {
+		//create returned array
+		let ret = [];
 		for (let i = 0; i < max; i++) {
-			temp.push(this.getRandomInt());
+			ret.push(this.getRandomInt());
 		}
 		if (!this.state.allowEmptyBars) {
 			// if the bar is empty, return a new bar
 			let empty = false;
-			temp.forEach(value => {
+			ret.forEach(value => {
 				if (value === 1) {
 					empty = true;
 				}
 			});
 			if (!empty) {
-				temp = this.getRandomArray(max);
+				ret = this.getBinaryFigure(max);
 			}
 		}
-		return temp;
+		return ret;
 	};
 
 	//Assembles all components
@@ -114,23 +138,35 @@ class RhythmPractice extends Component {
 		let value;
 		if (
 			this.state.mode === "bar" ||
-			(this.state.mode === "tuplet" && (size === 3 || size === 2))
+			(this.state.mode === "tuplet" && (size[0] === 3 || size[0] === 2))
 		) {
 			value = "eighth";
 		} else if (this.state.mode === "tuplet") {
 			value = "sixteenth";
 		}
-		// create temporary array where the rhythmic figure is stored as binary (1 = note, 0 = rest)
-		let binaryFigure = this.getRandomArray(size);
+		// create temporary array where the rhythmic figure for each subdivision is stored as binary (1 = note, 0 = rest)
+		let binaryFigures = [];
+		size.forEach(subdivision => {
+			binaryFigures.push(this.getBinaryFigure(subdivision));
+		});
 		// translate the binary figure into a series of divs containing unicode characters
-		let unicodeFigure = [];
-		checkFirst(binaryFigure, unicodeFigure, value);
-		for (let i = 0; i < size - 2; i++) {
-			checkMid(binaryFigure, unicodeFigure, i, value);
-		}
-		checkLast(binaryFigure, unicodeFigure, value);
-		currentFigures.push(binaryFigure);
-		return unicodeFigure;
+		let unicodeFigures = [];
+		//iterate through each subdivision
+		binaryFigures.forEach(figure => {
+			//create array where the unicode subdivison will be pushed
+			let unicodeFigure = [];
+			//convert binary figures into unicode symbols. these functions return properly-beamed notes
+			checkFirst(figure, unicodeFigure, value);
+			for (let i = 0; i < figure.length - 2; i++) {
+				checkMid(figure, unicodeFigure, i, value);
+			}
+			checkLast(figure, unicodeFigure, value);
+			unicodeFigures.push(unicodeFigure);
+		});
+		//concatenate all subdivisions to store the values of the bar/tuplet in the state.
+		let sum = [].concat.apply([], binaryFigures);
+		currentFigures.push(sum);
+		return unicodeFigures;
 	};
 
 	loadNewImage = () => {
@@ -141,8 +177,8 @@ class RhythmPractice extends Component {
 		let displayedTuplets = [...this.state.displayedTuplets];
 		let timeSignatures = [...this.state.timeSignatures];
 		// get a random time signature from the size array,
-		// remove the first figure and generate a new one, remove first time signature and generate new one
 		let e = this.getRandomTimeSig(this.state.size);
+		// remove the first figure and generate a new one, remove first time signature and generate new one
 		binaryFigures.shift();
 		displayedFigures.shift();
 		displayedFigures.push(this.getFigure(e, binaryFigures));
@@ -150,13 +186,14 @@ class RhythmPractice extends Component {
 		timeSignatures.push(e);
 		if (this.state.mode === "bar") {
 			displayedTimeSignatures.shift();
-			getTimeSig(e, displayedTimeSignatures, 1);
+			getTimeSig(e, displayedTimeSignatures, 1, this.state.mode);
+			timeSignatures[1] = timeSignatures[1].reduce(reducer, 0);
 		}
 
 		if (this.state.mode === "tuplet") {
 			displayedTuplets.shift();
 			displayedTuplets.push(fillInTuplets(e));
-			if (e === 4) {
+			if (e[0] === 4) {
 				displayedTuplets[1] = null;
 			}
 		}
@@ -260,6 +297,7 @@ class RhythmPractice extends Component {
 		if (this.state.countDownCheck) return;
 		//set the current date to check if enough time has passed
 		let now = new Date() / 1;
+		//number of clicks per minute
 		let clickInterval = 60000 / parseInt(this.state.tempoInput);
 		if (now - this.state.lastBeat > clickInterval) {
 			let repCount = this.state.repCount;
@@ -297,24 +335,36 @@ class RhythmPractice extends Component {
 				...this.state.displayedTimeSignatures
 			];
 			let displayedTuplets = [...this.state.displayedTuplets];
-			// going through both possible time signatures
+			// going through possible time signatures for each of the two displayed bars
 			timeSignatures.forEach((timeSignature, i) => {
 				//select a random value in the possible sizes (time signatures) and push both the time signature symbol and its corresponding rhythmic figure
 				if (this.state.mode === "bar") {
+					//generate a random number based on the user's selected possible values which will become the time signature
 					timeSignatures[i] = this.getRandomTimeSig(this.state.size);
+					//generate the rhythmic figures to be dispalyed. first arg is an array containing each subdivision of the bar,
+					//second is the array in which these values will be stored in the state
 					displayedFigures.push(
 						this.getFigure(timeSignatures[i], binaryFigures)
 					);
-					getTimeSig(timeSignatures[i], displayedTimeSignatures, i);
+					//generate the unicode symbols for the time signature
+					getTimeSig(
+						timeSignatures[i],
+						displayedTimeSignatures,
+						i,
+						this.state.mode
+					);
+					// rewrite the time signature as the sum of all subdivisions
+					timeSignatures[i] = timeSignatures[i].reduce(reducer, 0);
 				}
 				if (this.state.mode === "tuplet") {
 					timeSignatures[i] = this.getRandomTimeSig(this.state.size);
+					console.log("time siggiez", timeSignatures);
 					displayedFigures.push(
 						this.getFigure(timeSignatures[i], binaryFigures)
 					);
-					getTimeSig(1, displayedTimeSignatures, i);
+					getTimeSig([1], displayedTimeSignatures, i);
 					displayedTuplets.push(fillInTuplets(timeSignatures[i]));
-					if (timeSignatures[i] === 4) {
+					if (timeSignatures[i][0] === 4) {
 						displayedTuplets[i] = null;
 					}
 				}
@@ -350,15 +400,21 @@ class RhythmPractice extends Component {
 	};
 
 	createValueSelectors = () => {
-		let values = [3, 4, 5, 6, 7];
+		//list of possible subdivisions for rhythmic values. their sum represents the total number of 8th notes in the bar or the size of the tuplet
+		let values = [[3], [2, 2], [3, 2], [3, 3], [3, 2, 2], [2, 2, 2, 2]];
+		//automatically generate checkboxes
 		let ret = values.map(value => {
+			//sum of all the subdivisions in the bar this is displayed next to the radio button
+			let sumValue = value.reduce(reducer, 0);
 			let checked = false;
-			if (value === 3) {
+			//check 3 by default
+			if (sumValue === 3) {
 				checked = true;
 			}
 			return (
 				<div>
-					{value}
+					{sumValue}
+					{sumValue === 8 ? " (4/4)" : null}
 					<input
 						type="checkbox"
 						onClick={event => {
@@ -375,7 +431,6 @@ class RhythmPractice extends Component {
 	};
 
 	render = () => {
-		// console.log("play answer?", this.state.playAnswer);
 		return (
 			<div className="rhythmContainer">
 				<div className="instructions">
@@ -538,9 +593,19 @@ class RhythmPractice extends Component {
 												}{" "}
 											</div>
 											<div style={{ marginTop: "-32px" }}>
-												{this.state.mode === "bar"
+												{this.state.mode === "bar" &&
+												this.state.timeSignatures[i] ===
+													8
+													? timeSignatureCodes.four
+													: null}
+												{this.state.mode === "bar" &&
+												this.state.timeSignatures[i] !==
+													8
 													? timeSignatureCodes.eight
-													: timeSignatureCodes.four}
+													: null}
+												{this.state.mode === "tuplet"
+													? timeSignatureCodes.four
+													: null}
 											</div>
 										</div>
 										<div className="rp-barcontainer">

@@ -6,72 +6,107 @@ import {
 	restCodes
 } from "../UnicodeAssignment.js";
 
-//Checks to see which beams for the first note
-let checkFirst = (i, e, value) => {
-	if (i[0] === 1 && i[1] === 1) {
-		e.push(
+let checkFirst = (figure, unicodeFigure, value) => {
+	//f the first beat and the second beat are both active, add a beam to the right
+	if (figure[0] === 1 && figure[1] === 1) {
+		unicodeFigure.push(
 			<div className="rp-note">
 				{completeNotes.beamless}
 				<div className="rp-eighthbeam">{beamCodes[value]}</div>
 			</div>
 		);
-	} else if (i[0] === 1 && i[1] === 0) {
-		e.push(
+		//if the first beat is active but the second beat is a rest, add a flag
+	} else if (figure[0] === 1 && figure[1] === 0) {
+		unicodeFigure.push(
 			<div className="rp-note">
 				{completeNotes.beamless}
 
 				<div className="rp-eighthflag">{flagCodes[value].up}</div>
 			</div>
 		);
-	} else if (i[0] === 0) {
-		e.push(<div className="rp-rest">{restCodes[value]}</div>);
+		//if the current beat is a rest, push a rest
+	} else if (figure[0] === 0) {
+		unicodeFigure.push(
+			<div className="rp-rest" style={{ marginLeft: "0px" }}>
+				{restCodes[value]}
+			</div>
+		);
 	}
 };
 
-//Checks to see which beam for any middle note
-let checkMid = (i, e, d, value) => {
-	if (i[1 + d] === 1 && i[0 + d] === 1 && i[2 + d] === 1) {
-		e.push(
+//Checks to see which beam to push for any middle note
+let checkMid = (figure, unicodeFigure, i, value) => {
+	//if the current beat, the one before and the one after are active, add a through beam
+	if (figure[1 + i] === 1 && figure[0 + i] === 1 && figure[2 + i] === 1) {
+		unicodeFigure.push(
 			<div className="rp-note">
 				{completeNotes[value]}
 				<div className="rp-eighthbeam">{beamCodes[value]}</div>
 			</div>
 		);
-	} else if (i[1 + d] === 1 && i[0 + d] === 0 && i[2 + d] === 1) {
-		e.push(
+		//if the current beam is active, but only the one after is active, add a beam to the right
+	} else if (
+		figure[0 + i] === 0 &&
+		figure[1 + i] === 1 &&
+		figure[2 + i] === 1
+	) {
+		unicodeFigure.push(
 			<div className="rp-note">
 				{completeNotes.beamless}
 				<div className="rp-eighthbeam">{beamCodes[value]}</div>
 			</div>
 		);
-	} else if (i[1 + d] === 1 && i[0 + d] === 1 && i[2 + d] === 0) {
-		e.push(<div className="rp-note">{completeNotes[value]}</div>);
-	} else if (i[1 + d] === 1 && i[0 + d] === 0 && i[2 + d] === 0) {
-		e.push(
+		//if the current beam is active, but only the one before is active, add a beam to the left
+	} else if (
+		figure[0 + i] === 1 &&
+		figure[1 + i] === 1 &&
+		figure[2 + i] === 0
+	) {
+		unicodeFigure.push(
+			<div className="rp-note">{completeNotes[value]}</div>
+		);
+		//if only the current beat is active, add a flag
+	} else if (
+		figure[0 + i] === 0 &&
+		figure[1 + i] === 1 &&
+		figure[2 + i] === 0
+	) {
+		unicodeFigure.push(
 			<div className="rp-note">
 				{completeNotes.beamless}
 
 				<div className="rp-eighthflag">{flagCodes[value].up}</div>
 			</div>
 		);
-	} else if (i[1 + d] === 0) {
-		e.push(<div className="rp-rest">{restCodes[value]}</div>);
+		//if the current beat is a rest, push a rest
+	} else if (figure[1 + i] === 0) {
+		unicodeFigure.push(<div className="rp-rest">{restCodes[value]}</div>);
 	}
 };
 
 //Checks to see which beam for last note
-let checkLast = (i, e, value) => {
-	if (i[i.length - 1] === 1 && i[i.length - 2] === 1) {
-		e.push(<div className="rp-note">{completeNotes[value]}</div>);
-	} else if (i[i.length - 1] === 1 && i[i.length - 2] === 0) {
-		e.push(
-			<div className="rp-note">
+let checkLast = (figure, unicodeFigure, value) => {
+	if (figure[figure.length - 1] === 1 && figure[figure.length - 2] === 1) {
+		//if last beat and the one before are active, add a beam to the left
+		unicodeFigure.push(
+			<div className="rp-note" style={{ marginRight: "17px" }}>
+				{completeNotes[value]}
+			</div>
+		);
+		//if only last beat is active, add a flag
+	} else if (
+		figure[figure.length - 1] === 1 &&
+		figure[figure.length - 2] === 0
+	) {
+		unicodeFigure.push(
+			<div className="rp-note" style={{ marginRight: "17px" }}>
 				{completeNotes.beamless}
 				<div className="rp-eighthflag">{flagCodes[value].up}</div>
 			</div>
 		);
-	} else if (i[i.length - 1] === 0) {
-		e.push(<div className="rp-rest">{restCodes[value]}</div>);
+		//if the current beat is a rest, push a rest
+	} else if (figure[figure.length - 1] === 0) {
+		unicodeFigure.push(<div className="rp-rest">{restCodes[value]}</div>);
 	}
 };
 

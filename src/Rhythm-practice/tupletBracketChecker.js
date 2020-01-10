@@ -3,7 +3,7 @@ import { tupletBracketCodes, tupletCodes } from "../UnicodeAssignment.js";
 
 let tupletChecker = i => {
 	console.log("size", i);
-	switch (i) {
+	switch (i[0]) {
 		case 2:
 			return tupletCodes.two;
 		case 3:
@@ -22,11 +22,15 @@ let tupletChecker = i => {
 };
 
 let fillInTuplets = size => {
+	//return array
 	let tupletBrackets = [];
+	//push the left-hand side bracket
 	tupletBrackets.push(<div>{tupletBracketCodes.left}</div>);
+	//push the tuplet value number
 	tupletBrackets.push(
 		<div className="rp-tupletvalue">{tupletChecker(size)}</div>
 	);
+	//push the right-hand side bracket
 	tupletBrackets.push(<div>{tupletBracketCodes.right}</div>);
 	return tupletBrackets;
 };
