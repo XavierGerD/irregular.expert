@@ -69,29 +69,20 @@ export default class Simple extends Component {
 	createWaveSelectors = () => {
 		let waveforms = ["sine", "square", "triangle", "sawtooth"];
 		let ret = waveforms.map(waveform => {
+			let className = "waveselector";
 			if (this.state.wave === waveform) {
-				return (
-					<div
-						className="waveselector selected"
-						onClick={event => {
-							this.setWave(event, waveform);
-						}}
-					>
-						{waveform.charAt(0).toUpperCase() + waveform.slice(1)}
-					</div>
-				);
-			} else {
-				return (
-					<div
-						className="waveselector"
-						onClick={event => {
-							this.setWave(event, waveform);
-						}}
-					>
-						{waveform.charAt(0).toUpperCase() + waveform.slice(1)}
-					</div>
-				);
+				className = "waveselector selected";
 			}
+			return (
+				<div
+					className={className}
+					onClick={event => {
+						this.setWave(event, waveform);
+					}}
+				>
+					{waveform.charAt(0).toUpperCase() + waveform.slice(1)}
+				</div>
+			);
 		});
 		return ret;
 	};
@@ -99,25 +90,18 @@ export default class Simple extends Component {
 	createOctaveSelectors = () => {
 		let ret = [];
 		for (let i = 2; i < 6; i++) {
+			let className = "octave-selector";
 			if (this.state.octave === i) {
-				ret.push(
-					<div
-						className="octave-selector selected"
-						onClick={event => this.setOctave(event, i)}
-					>
-						{i}
-					</div>
-				);
-			} else {
-				ret.push(
-					<div
-						className="octave-selector"
-						onClick={event => this.setOctave(event, i)}
-					>
-						{i}
-					</div>
-				);
+				className = "octave-selector selected";
 			}
+			ret.push(
+				<div
+					className={className}
+					onClick={event => this.setOctave(event, i)}
+				>
+					{i}
+				</div>
+			);
 		}
 		return ret;
 	};
@@ -127,29 +111,20 @@ export default class Simple extends Component {
 		let currentNote = this.state.currentNote;
 		currentNote = currentNote.replace(/[0-9]/g, "");
 		let ret = notes.map(note => {
+			let className = "whitenotebutton";
 			if (currentNote === note) {
-				return (
-					<div
-						className="whitenotebutton selected"
-						onClick={event =>
-							this.setNote(event, note + this.state.octave)
-						}
-					>
-						{note}
-					</div>
-				);
-			} else {
-				return (
-					<div
-						className="whitenotebutton"
-						onClick={event =>
-							this.setNote(event, note + this.state.octave)
-						}
-					>
-						{note}
-					</div>
-				);
+				className = "whitenotebutton selected";
 			}
+			return (
+				<div
+					className={className}
+					onClick={event =>
+						this.setNote(event, note + this.state.octave)
+					}
+				>
+					{note}
+				</div>
+			);
 		});
 
 		return ret;

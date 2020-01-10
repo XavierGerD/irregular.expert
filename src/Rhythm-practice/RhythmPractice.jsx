@@ -95,17 +95,17 @@ class RhythmPractice extends Component {
 	};
 
 	getRandomTimeSig = size => {
+		//obtain a random time signature or tuplet value from all possible user-entered values
 		let randomSig = size[Math.floor(Math.random() * size.length)];
+		//if in tuplet mode, return the sum of all subdivisions
 		if (this.state.mode === "tuplet") {
 			randomSig = [randomSig.reduce(reducer, 0)];
 		}
-
-		console.log("random time sigs", randomSig);
 		return randomSig;
 	};
 
-	//Generates random int between 0 and 1
 	getRandomInt = (min, max) => {
+		//generate a random int between 0 and 1
 		min = Math.ceil(0);
 		max = Math.floor(2);
 		return Math.floor(Math.random() * (max - min)) + min;

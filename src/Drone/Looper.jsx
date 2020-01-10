@@ -144,29 +144,20 @@ export default class Looper extends Component {
 	createWaveSelectors = () => {
 		let waveforms = ["sine", "square", "triangle", "sawtooth"];
 		let ret = waveforms.map(waveform => {
+			let className = "waveselector";
 			if (this.state.wave === waveform) {
-				return (
-					<div
-						className="waveselector selected"
-						onClick={event => {
-							this.setWave(event, waveform);
-						}}
-					>
-						{waveform.charAt(0).toUpperCase() + waveform.slice(1)}
-					</div>
-				);
-			} else {
-				return (
-					<div
-						className="waveselector"
-						onClick={event => {
-							this.setWave(event, waveform);
-						}}
-					>
-						{waveform.charAt(0).toUpperCase() + waveform.slice(1)}
-					</div>
-				);
+				className = "waveselector selected";
 			}
+			return (
+				<div
+					className={className}
+					onClick={event => {
+						this.setWave(event, waveform);
+					}}
+				>
+					{waveform.charAt(0).toUpperCase() + waveform.slice(1)}
+				</div>
+			);
 		});
 		return ret;
 	};
