@@ -39,6 +39,7 @@
 	height: 100px;
 	display: flex;
 	justify-content: center;
+	pointer-events: none;
 	/* margin-left: -200px; */
 }
 

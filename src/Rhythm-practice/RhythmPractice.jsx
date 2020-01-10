@@ -155,11 +155,11 @@ class RhythmPractice extends Component {
 			//create array where the unicode subdivison will be pushed
 			let unicodeFigure = [];
 			//convert binary figures into unicode symbols. these functions return properly-beamed notes
-			checkFirst(figure, unicodeFigure, value);
+			checkFirst(figure, unicodeFigure, value, this.state.mode);
 			for (let i = 0; i < figure.length - 2; i++) {
-				checkMid(figure, unicodeFigure, i, value);
+				checkMid(figure, unicodeFigure, i, value, this.state.mode);
 			}
-			checkLast(figure, unicodeFigure, value);
+			checkLast(figure, unicodeFigure, value, this.state.mode);
 			unicodeFigures.push(unicodeFigure);
 		});
 		//concatenate all subdivisions to store the values of the bar/tuplet in the state.
@@ -457,14 +457,6 @@ class RhythmPractice extends Component {
 					</div>
 				</div>
 				<div className="rhythmContainer">
-					<div>
-						<button id="start" onClick={this.startExercise}>
-							Start
-						</button>
-						<button id="stop" onClick={this.stopExercise}>
-							Stop
-						</button>
-					</div>
 					<div className="rp-controlpanel">
 						<div className="rp-panelsection">
 							<div className="rp-controlitem">
@@ -632,6 +624,22 @@ class RhythmPractice extends Component {
 							})}
 						</div>
 					</div>
+				</div>
+				<div
+					style={{
+						marginBottom: "20px",
+						marginTop: "-30px",
+						width: "445px",
+						display: "flex",
+						justifyContent: "space-around"
+					}}
+				>
+					<button id="start" onClick={this.startExercise}>
+						Start!
+					</button>
+					<button id="stop" onClick={this.stopExercise}>
+						Stop!
+					</button>
 				</div>
 				<Instructions />
 			</div>
