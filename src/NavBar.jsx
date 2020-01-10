@@ -13,6 +13,10 @@ export default class NavBar extends Component {
 
 				<div style={{ display: "flex", justifyContent: "center" }}>
 					<div className="menuitem">
+						<Link to={"/detune"}>Detune </Link>
+					</div>
+
+					<div className="menuitem">
 						<Link to={"/drone"}>Drone </Link>
 					</div>
 					<div className="menuitem">

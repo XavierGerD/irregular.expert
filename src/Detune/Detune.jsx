@@ -9,9 +9,59 @@ export default class Detune extends Component {
 			octave: 4,
 			wave: "triangle",
 			currentNote: "",
-			pitchClasses: [{ class: "C", frequency: 200 }]
+			pitchClasses: [
+				"C",
+				"Db",
+				"D",
+				"Eb",
+				"E",
+				"F",
+				"GB",
+				"G",
+				"Ab",
+				"A",
+				"Bb",
+				"B"
+			],
+			pitchValues: [],
+			globalDetune: 0
 		};
 	}
+
+	componentWillMount = () => {
+		let pitchValues = [];
+		for (let i = 1; i < 8; i++) {
+			let pitchClasses = this.state.pitchClasses.map(pitchClass => {
+				let pitch = pitchClass + i;
+				return {
+					pitch,
+					frequency: Tone.Frequency(pitch).toFrequency()
+				};
+			});
+			pitchValues = pitchValues.concat(pitchClasses);
+		}
+		this.setState({ pitchValues });
+	};
+
+	getRatios = tonic => {
+		let pitchClasses = [...this.state.pitchClasses];
+		let index = pitchClasses.indexOf(tonic) + 1;
+		let loopComplete = false;
+		for (let i = index; i < pitchClasses.length; i++) {
+			if (i === pitchClasses.length - 1 && !loopComplete) {
+				i = 0;
+			}
+			if (pitchClasses[i] === tonic) loopComplete = true;
+		}
+	};
+
+	setJustIntonation = tonic => {
+		tonic = tonic + 4;
+		let pitchValues = [...this.state.pitchValues];
+		pitchValues.map(pitchValue => {
+			return pitchValue;
+		});
+	};
 
 	setNote = (event, value) => {
 		event.preventDefault();
@@ -21,30 +71,20 @@ export default class Detune extends Component {
 	};
 
 	createWhiteNotes = () => {
-		let notes = ["C", "D", "E", "F", "G", 438, "B"];
-		let currentNote = this.state.currentNote;
-		// currentNote = currentNote.replace(/[0-9]/g, "");
+		let notes = this.state.pitchValues;
 		let ret = notes.map(note => {
-			if (currentNote === note) {
+			let currentNote = note.pitch.replace(/[\D]/g, "");
+			if (parseInt(currentNote) > 3 && parseInt(currentNote) < 6) {
+				let className = "whitenotebutton";
+				if (currentNote === note) {
+					className = "whitenotebutton selected";
+				}
 				return (
 					<div
-						className="whitenotebutton selected"
-						onClick={event =>
-							this.setNote(event, note + this.state.octave)
-						}
+						className={className}
+						onClick={event => this.setNote(event, note.frequency)}
 					>
-						{note}
-					</div>
-				);
-			} else {
-				return (
-					<div
-						className="whitenotebutton"
-						onClick={event =>
-							this.setNote(event, note + this.state.octave)
-						}
-					>
-						{note}
+						{note.pitch}
 					</div>
 				);
 			}
@@ -89,11 +129,12 @@ export default class Detune extends Component {
 	};
 
 	render = () => {
+		console.log("state", this.state);
 		return (
 			<div>
 				{" "}
 				<div>
-					<div className="blacknotes">{this.createBlackNotes()}</div>
+					{/* <div className="blacknotes">{this.createBlackNotes()}</div> */}
 
 					<div className="whitenotes">{this.createWhiteNotes()}</div>
 				</div>

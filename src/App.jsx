@@ -13,13 +13,18 @@ class App extends Component {
 	renderDrone = () => {
 		return <DroneGenerator />;
 	};
+
+	renderDetune = () => {
+		return <Detune />;
+	};
+
 	render = () => {
 		return (
 			<BrowserRouter>
 				<NavBar />
-				{/* <Detune /> */}
 				<Route exact={true} path="/" render={this.renderRhythm} />
 				<Route exact={true} path="/drone" render={this.renderDrone} />
+				<Route exact={true} path="/detune" render={this.renderDetune} />
 			</BrowserRouter>
 		);
 	};
