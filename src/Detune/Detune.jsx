@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import Tone from "tone";
+import "./Detune.css";
 
 export default class Detune extends Component {
 	constructor() {
 		super();
 		this.state = {
-			synth: new Tone.PolySynth().toMaster(),
+			synth: new Tone.PolySynth(4, Tone.Synth, {
+				oscillator: { type: "triangle" }
+			}).toMaster(),
 			octave: 4,
 			wave: "triangle",
 			currentNote: "",
@@ -16,7 +19,7 @@ export default class Detune extends Component {
 				"Eb",
 				"E",
 				"F",
-				"GB",
+				"Gb",
 				"G",
 				"Ab",
 				"A",
@@ -24,43 +27,90 @@ export default class Detune extends Component {
 				"B"
 			],
 			pitchValues: [],
-			globalDetune: 0
+			globalDetune: 0,
+			currentTemperament: undefined,
+			showFrequencies: true
 		};
 	}
 
 	componentWillMount = () => {
+		this.getEqualTemperament();
+	};
+
+	getEqualTemperament = () => {
+		//create return array
 		let pitchValues = [];
-		for (let i = 1; i < 8; i++) {
+		//i starts at the lower octave to be dispalyed and the for ends before the highest octave to be dispalyed
+		for (let i = 4; i < 6; i++) {
 			let pitchClasses = this.state.pitchClasses.map(pitchClass => {
+				//pitch class + octave
 				let pitch = pitchClass + i;
+				//white note unless is has an accidental
+				let color = "white";
+				if (pitch[1] === "b" || pitch[1] === "#") color = "black";
 				return {
 					pitch,
-					frequency: Tone.Frequency(pitch).toFrequency()
+					frequency: Tone.Frequency(pitch).toFrequency(),
+					ratio: undefined,
+					color
 				};
 			});
+			//create one large array with all pitches
 			pitchValues = pitchValues.concat(pitchClasses);
 		}
-		this.setState({ pitchValues });
-	};
-
-	getRatios = tonic => {
-		let pitchClasses = [...this.state.pitchClasses];
-		let index = pitchClasses.indexOf(tonic) + 1;
-		let loopComplete = false;
-		for (let i = index; i < pitchClasses.length; i++) {
-			if (i === pitchClasses.length - 1 && !loopComplete) {
-				i = 0;
-			}
-			if (pitchClasses[i] === tonic) loopComplete = true;
-		}
-	};
-
-	setJustIntonation = tonic => {
-		tonic = tonic + 4;
-		let pitchValues = [...this.state.pitchValues];
-		pitchValues.map(pitchValue => {
-			return pitchValue;
+		this.setState({ pitchValues, currentTemperament: "equal" }, () => {
+			console.log("state", this.state);
 		});
+	};
+
+	getJustIntonation = tonic => {
+		//get values from state
+		let pitchClasses = this.state.pitchClasses;
+		let pitchValues = [...this.state.pitchValues];
+		let ratios = [
+			[1, 1],
+			[25, 24],
+			[9, 8],
+			[6, 5],
+			[5, 4],
+			[4, 3],
+			[45, 32],
+			[3, 2],
+			[8, 5],
+			[5, 3],
+			[9, 5],
+			[15, 8]
+		];
+		//find the frequency of the note from which to derive rations
+		let tonicFrequency = Tone.Frequency(tonic + "4").toFrequency();
+		//cut the ratios array in half and switch the position of the two halves.
+		//this is done so that the index of the ratios matches the index of the pitch classes
+		//for example if we want just intonation in F, the index of ratio [1, 1] must match the index of F
+		let index = pitchClasses.indexOf(tonic);
+		let distanceToEnd = pitchClasses.length - index;
+		let firstHalf = ratios.slice(distanceToEnd, ratios.length);
+		let secondHalf = ratios.slice(0, distanceToEnd);
+		let ratiosRearranged = firstHalf.concat(secondHalf);
+		let offset = 0;
+		let octaveMultiplier = 1;
+		pitchValues.forEach((pitchValue, i) => {
+			pitchValue.frequency =
+				((tonicFrequency * ratiosRearranged[i - offset][0]) /
+					ratiosRearranged[i - offset][1]) *
+				octaveMultiplier;
+			if (i - offset < index) {
+				pitchValue.frequency = pitchValue.frequency / 2;
+			}
+
+			pitchValue.ratio = ratiosRearranged[i - offset];
+
+			if (i === ratiosRearranged.length - 1) {
+				offset += 12;
+				octaveMultiplier = octaveMultiplier * 2;
+			}
+		});
+
+		this.setState({ pitchValues, currentTemperament: "just" });
 	};
 
 	setNote = (event, value) => {
@@ -74,19 +124,47 @@ export default class Detune extends Component {
 		let notes = this.state.pitchValues;
 		let ret = notes.map(note => {
 			let currentNote = note.pitch.replace(/[\D]/g, "");
-			if (parseInt(currentNote) > 3 && parseInt(currentNote) < 6) {
-				let className = "whitenotebutton";
-				if (currentNote === note) {
-					className = "whitenotebutton selected";
+			if (note.color === "white") {
+				if (parseInt(currentNote) > 3 && parseInt(currentNote) < 6) {
+					let className = "whitenotebutton";
+					if (currentNote === note) {
+						className = "whitenotebutton selected";
+					}
+					return (
+						<div
+							className={className}
+							onClick={event =>
+								this.setNote(event, note.frequency)
+							}
+						>
+							<div>
+								<div>{note.pitch}</div>
+								{note.ratio !== undefined ? (
+									<div
+										style={{
+											fontSize: "16px",
+											display: "flex",
+											justifyContent: "center"
+										}}
+									>
+										{note.ratio[0]}:{note.ratio[1]}
+									</div>
+								) : null}
+								{this.state.showFrequencies ? (
+									<div
+										style={{
+											fontSize: "16px",
+											display: "flex",
+											justifyContent: "center"
+										}}
+									>
+										{note.frequency.toFixed(2)}
+									</div>
+								) : null}
+							</div>
+						</div>
+					);
 				}
-				return (
-					<div
-						className={className}
-						onClick={event => this.setNote(event, note.frequency)}
-					>
-						{note.pitch}
-					</div>
-				);
 			}
 		});
 
@@ -94,34 +172,58 @@ export default class Detune extends Component {
 	};
 
 	createBlackNotes = () => {
-		let notes = ["Db", "Eb", "spacer", "GB", "Ab", "Bb"];
-		let currentNote = this.state.currentNote;
-		// currentNote = currentNote.replace(/[0-9]/g, "");
+		let notes = this.state.pitchValues;
 		let ret = notes.map(note => {
-			if (currentNote === note) {
-				return (
-					<div
-						className="blacknotebutton selected"
-						onClick={event =>
-							this.setNote(event, note + this.state.octave)
-						}
-					>
-						{note}
-					</div>
-				);
-			} else if (note === "spacer") {
-				return <div className="notespacer" />;
-			} else {
-				return (
-					<div
-						className="blacknotebutton"
-						onClick={event =>
-							this.setNote(event, note + this.state.octave)
-						}
-					>
-						{note}
-					</div>
-				);
+			let currentNote = note.pitch.replace(/[\D]/g, "");
+			if (note.color === "black") {
+				if (parseInt(currentNote) > 3 && parseInt(currentNote) < 6) {
+					let className = "blacknotebutton";
+					if (currentNote === note) {
+						className = "blacknotebutton selected";
+					}
+					return (
+						<React.Fragment>
+							<div
+								className={className}
+								onClick={event =>
+									this.setNote(event, note.frequency)
+								}
+							>
+								<div>
+									<div>{note.pitch}</div>
+									{note.ratio !== undefined ? (
+										<div
+											style={{
+												fontSize: "16px",
+												display: "flex",
+												justifyContent: "center"
+											}}
+										>
+											{note.ratio[0]}:{note.ratio[1]}
+										</div>
+									) : null}
+									{this.state.showFrequencies ? (
+										<div
+											style={{
+												fontSize: "16px",
+												display: "flex",
+												justifyContent: "center"
+											}}
+										>
+											{note.frequency.toFixed(2)}
+										</div>
+									) : null}
+								</div>
+							</div>
+							{note.pitch[0] === "E" ? (
+								<div className="notespacer"></div>
+							) : null}
+							{note.pitch[0] === "B" ? (
+								<div className="notespacer"></div>
+							) : null}
+						</React.Fragment>
+					);
+				}
 			}
 		});
 
@@ -131,12 +233,60 @@ export default class Detune extends Component {
 	render = () => {
 		console.log("state", this.state);
 		return (
-			<div>
+			<div
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "center"
+				}}
+			>
 				{" "}
-				<div>
-					{/* <div className="blacknotes">{this.createBlackNotes()}</div> */}
+				<div style={{ marginTop: "50px" }}>
+					<div className="blacknotes">{this.createBlackNotes()}</div>
 
 					<div className="whitenotes">{this.createWhiteNotes()}</div>
+					<div className="detune-selector">
+						<div>
+							Equal Temperament
+							<input
+								type="radio"
+								name="temperamentSelect"
+								onChange={event => this.getEqualTemperament()}
+								defaultChecked={true}
+							/>
+						</div>
+						<div>
+							Just intonation
+							<input
+								type="radio"
+								name="temperamentSelect"
+								onChange={event => this.getJustIntonation("C")}
+							/>
+							in{" "}
+							<select
+								disabled={
+									this.state.currentTemperament !== "just"
+								}
+								onChange={event =>
+									this.getJustIntonation(event.target.value)
+								}
+							>
+								{this.state.pitchClasses.map(pitchClass => {
+									return (
+										<option value={pitchClass}>
+											{pitchClass}
+										</option>
+									);
+								})}
+							</select>
+						</div>
+						<div
+							className="waveselector"
+							onClick={event => this.state.synth.releaseAll()}
+						>
+							Release all
+						</div>
+					</div>
 				</div>
 			</div>
 		);
