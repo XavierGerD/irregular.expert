@@ -52,6 +52,7 @@
 	font-family: "Raleway", sans-serif;
 	display: flex;
 	justify-content: center;
+	font-size: 18px;
 }
 
 .instructions-narrow {
@@ -92,6 +93,10 @@
 	top: 0px;
 	left: 3px;
 	color: #99a1a7;
+}
+
+.checkbox:checked:hover {
+	background-color: black;
 }
 
 .checkbox:focus {
@@ -155,4 +160,11 @@
 
 .rp-inputBox-small:focus {
 	outline: none;
+}
+
+.waveselector-container {
+	display: flex;
+	margin-bottom: 20px;
+	justify-content: space-between;
+	width: 445px;
 }

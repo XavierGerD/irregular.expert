@@ -250,14 +250,7 @@ export default class Looper extends Component {
 						}}
 					>
 						<div>
-							<div
-								style={{
-									display: "flex",
-									marginBottom: "20px",
-									justifyContent: "space-between",
-									width: "445px"
-								}}
-							>
+							<div className="waveselector-container">
 								{this.createWaveSelectors()}
 							</div>
 							<div

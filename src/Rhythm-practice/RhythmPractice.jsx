@@ -443,7 +443,7 @@ class RhythmPractice extends Component {
 			<div className="rhythmContainer">
 				<div className="instructions">
 					<div style={{ width: "1000px" }}>
-						<div>
+						<div className="instructions">
 							This app allows you to practice all types of regular
 							and irregular rhythmic groups, as well as
 							alternating between different values. It works by

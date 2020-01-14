@@ -232,3 +232,13 @@
 .slider::-webkit-slider-thumb:hover {
 	background-color: #e6e6e6;
 }
+
+.cents-selector {
+	font-family: "Raleway", sans-serif;
+	font-weight: bold;
+	display: flex;
+	font-size: 22px;
+	margin-top: 10px;
+	justify-content: center;
+	align-items: center;
+}
