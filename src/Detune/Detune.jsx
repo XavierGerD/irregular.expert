@@ -433,7 +433,7 @@ export default class Detune extends Component {
 										this.arrowClickHandler(event)
 									}
 								/>
-								<input
+								{/* <input
 									className="rp-inputBox"
 									style={{
 										marginRight: "10px",
@@ -446,8 +446,8 @@ export default class Detune extends Component {
 											event.target.value
 										)
 									}
-								/>
-								Tone Equal Temperament
+								/> */}
+								12 Tone Equal Temperament
 								<input
 									type="radio"
 									className="radiobutton"
