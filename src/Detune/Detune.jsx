@@ -92,11 +92,13 @@ export default class Detune extends Component {
 		this.setState({ descriptions });
 	};
 
-	getMeantone = (tonic, ratio, name) => {
+	getRatioBased = (tonic, ratio, name) => {
 		//get values from state
 		let pitchValues = [...this.state.pitchValues];
 		//find the frequency of the note from which to derive rations
-		let tonicFrequency = Tone.Frequency(tonic + "4").toFrequency();
+		let tonicFrequency = Tone.Frequency(
+			tonic + this.state.octave + ""
+		).toFrequency();
 		let index = circleOfFifths.indexOf(tonic);
 		let firstHalf = [];
 		for (let i = index + 1; i < index + 7; i++) {
@@ -120,8 +122,9 @@ export default class Detune extends Component {
 				secondHalf.push(circleOfFifths[i]);
 			}
 		}
+		let indexInPitchClasses = pitchClasses.indexOf(tonic);
 		firstHalf.forEach((note, i) => {
-			pitchValues.forEach(pitch => {
+			pitchValues.forEach((pitch, j) => {
 				let currentNote = pitch.pitch.replace(/[0-9]/g, "");
 				if (note === currentNote) {
 					let frequency = tonicFrequency * ratio.fifth;
@@ -129,13 +132,22 @@ export default class Detune extends Component {
 						frequency = frequency * ratio.fifth;
 					while (frequency > tonicFrequency * 2)
 						frequency = frequency / 2;
+					let currentOctave = parseInt(
+						pitch.pitch.replace(/[\D]/g, "")
+					);
+					if (currentOctave === 5) frequency = frequency * 2;
+					if (
+						j < indexInPitchClasses ||
+						(j > 11 && j < indexInPitchClasses + 12)
+					)
+						frequency = frequency / 2;
 					pitch.frequency = frequency;
-					console.log("freq", i, note, frequency);
+					pitch.ratio = undefined;
 				}
 			});
 		});
 		secondHalf.forEach((note, i) => {
-			pitchValues.forEach(pitch => {
+			pitchValues.forEach((pitch, j) => {
 				let currentNote = pitch.pitch.replace(/[0-9]/g, "");
 				if (note === currentNote) {
 					let frequency = tonicFrequency * ratio.fourth;
@@ -143,10 +155,27 @@ export default class Detune extends Component {
 						frequency = frequency * ratio.fourth;
 					while (frequency > tonicFrequency * 2)
 						frequency = frequency / 2;
+					let currentOctave = parseInt(
+						pitch.pitch.replace(/[\D]/g, "")
+					);
+					if (currentOctave === 5) frequency = frequency * 2;
+					if (
+						j < indexInPitchClasses ||
+						(j > 11 && j < indexInPitchClasses + 12)
+					)
+						frequency = frequency / 2;
 					pitch.frequency = frequency;
-					console.log("freq", frequency);
+					pitch.ratio = undefined;
 				}
 			});
+		});
+
+		pitchValues.forEach(pitch => {
+			console.log("pitch", pitch);
+			let currentNote = pitch.pitch.replace(/[0-9]/g, "");
+			if (currentNote === tonic) {
+				pitch.ratio = undefined;
+			}
 		});
 
 		console.log("first", firstHalf);
@@ -479,7 +508,7 @@ export default class Detune extends Component {
 								/>
 								Just Intonation in{" "}
 								<select
-									style={{ marginLeft: "8px" }}
+									className="dropdown-select"
 									disabled={
 										this.state.currentTemperament !== "just"
 									}
@@ -562,7 +591,7 @@ export default class Detune extends Component {
 								/>
 								Pythagorean in{" "}
 								<select
-									style={{ marginLeft: "8px" }}
+									className="dropdown-select"
 									disabled={
 										this.state.currentTemperament !==
 										"pythagorean"
@@ -574,7 +603,7 @@ export default class Detune extends Component {
 													event.target.value
 											},
 											() => {
-												this.getJustTemperament(
+												this.getRatioBased(
 													this.state
 														.selectedPythagorean,
 													pythagoreanRatios,
@@ -597,7 +626,7 @@ export default class Detune extends Component {
 									className="radiobutton"
 									name="temperamentSelect"
 									onChange={event =>
-										this.getJustTemperament(
+										this.getRatioBased(
 											this.state.selectedPythagorean,
 											pythagoreanRatios,
 											"pythagorean"
@@ -666,7 +695,7 @@ export default class Detune extends Component {
 								/>
 								1/4 Comma Meantone{" "}
 								<select
-									style={{ marginLeft: "8px" }}
+									className="dropdown-select"
 									disabled={
 										this.state.currentTemperament !==
 										"quarterMeantone"
@@ -678,7 +707,7 @@ export default class Detune extends Component {
 													event.target.value
 											},
 											() => {
-												this.getMeantone(
+												this.getRatioBased(
 													this.state.selectedMeantone,
 													meantoneRatios,
 													"quarterMeantone"
@@ -700,7 +729,7 @@ export default class Detune extends Component {
 									className="radiobutton"
 									name="temperamentSelect"
 									onChange={event =>
-										this.getMeantone(
+										this.getRatioBased(
 											this.state.selectedMeantone,
 											meantoneRatios,
 											"quarterMeantone"
@@ -718,40 +747,31 @@ export default class Detune extends Component {
 								}}
 							>
 								<MathJax.Provider>
-									Pythagorean tuning is a system in which all
-									interval ratios are based on the perfect
-									fifth{" "}
-									{<MathJax.Node inline formula={"(3:2)"} />}.
-									This is achieved by selecting a starting
-									pitch, then going up the circle of fifths
-									six times, and down the circle of fifths
-									five times, tuning each consecutive fifth to
-									the{" "}
-									{<MathJax.Node inline formula={"3:2"} />}{" "}
-									ratio. For example, starting on D:
-									<div>
-										E♭–B♭–F–C–G–
-										<span style={{ fontWeight: 1000 }}>
-											D
-										</span>
-										–A–E–B–F♯–C♯–G♯
-									</div>
-									When continuing the circle of fifths
-									downwards to A♭, however, a problem arises:
-									the A♭ is not perfectly enharmonic with the
-									G♯ above. Indeed, both intervals are not a
-									perfect fifth away{" "}
-									{<MathJax.Node inline formula={"(3:2)"} />}{" "}
-									, but rather G♯ is about{" "}
-									{<MathJax.Node inline formula={"23.46"} />}{" "}
-									cents (or a Pythagorean comma) above A♭. To
-									remedy this, one of the fifths is left out.
-									This means that when closing the circle of
-									fifths, the very last fifth of the circle is
-									flat by a Pythagorean comma. This interval
-									is called the wolf fifth. The wolf fifth is
-									usually located a tritone above the note for
-									which the tuning is derived.
+									Quarter Comma Meantone is an attempt at
+									mitigating the loss of purity in major
+									thirds thirds caused by the width of the
+									fifths in Pythagorean tuning. Indeed, when
+									fifths are tuned to just intervals, like in
+									Pythagorean tuning, major thirds are
+									stretched. It is impossible to have both
+									pure major thirds and pure perfect fifths.
+									Hence, by reducing the size of fifths, it is
+									possible to achieve pure thirds. These new
+									fifths are obtained using the formula{" "}
+									{
+										<MathJax.Node
+											inline
+											formula={"(3/2) * (80/81)^{1/4}"}
+										/>
+									}{" "}
+									or{" "}
+									{
+										<MathJax.Node
+											inline
+											formula={"\\approx 1.49535"}
+										/>
+									}
+									.
 								</MathJax.Provider>
 							</div>
 						</div>

@@ -51,3 +51,15 @@
 	word-wrap: break-word;
 	line-height: 30px;
 }
+
+.dropdown-select {
+	margin-left: 8px;
+	border-radius: 6px;
+	border: 2px solid black;
+	font-family: "Raleway", sans-serif;
+	font-weight: bold;
+}
+
+.dropdown-select:focus {
+	outline: none;
+}
