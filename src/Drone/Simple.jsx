@@ -40,7 +40,7 @@ export default class Simple extends Component {
 		let pitchValues = [];
 		//i starts at the lower octave to be dispalyed and the for ends before the highest octave to be dispalyed
 		let newPitchClasses = pitchClassesFromA.map((pitchClass, i) => {
-			let frequency = tuning * Math.pow(2, i / 12);
+			let frequency = (tuning * Math.pow(2, i / 12)) / 2;
 			//white note unless is has an accidental
 			let color = "white";
 			if (pitchClass[1] === "b" || pitchClass[1] === "#") color = "black";
@@ -53,7 +53,7 @@ export default class Simple extends Component {
 
 		newPitchClasses.push({
 			pitch: "A",
-			frequency: tuning * Math.pow(2, 12 / 12),
+			frequency: tuning / 2,
 			color: "white"
 		});
 		//create one large array with all pitches
