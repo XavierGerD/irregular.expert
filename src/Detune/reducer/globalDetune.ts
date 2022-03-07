@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { IDetuneState, IPitchValue } from "./reducer";
+import { IDetuneState, IPitchValue } from "./slice";
 
 interface IHandleGlobalDetunePayloadAction {
   value: number;
@@ -15,7 +15,7 @@ const getNewPitchValue = (detune: number) => (pitchValue: IPitchValue) => ({
 
 export const setGlobalDetune = (
   state: IDetuneState,
-  payload: PayloadAction<IHandleGlobalDetunePayloadAction>,
+  payload: PayloadAction<IHandleGlobalDetunePayloadAction>
 ) => {
   const { value } = payload.payload;
   if (isNaN(value)) {

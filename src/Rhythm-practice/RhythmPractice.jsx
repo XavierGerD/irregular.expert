@@ -10,7 +10,7 @@ import {
 } from "../UnicodeAssignment.js";
 import Instructions from "./Instructions.jsx";
 import reducer from "./reducer.js";
-import { blip01, blip02, clap, countdownSound } from "../Audio.js";
+import { blip01, blip02, clap, countdownSound } from "../Audio";
 
 class RhythmPractice extends Component {
 	state = {

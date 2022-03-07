@@ -11,7 +11,7 @@ import {
   handleSetDescription,
   handleSetJustTemperament,
   handleSetJustTemperamentStartingPitch,
-} from "../../reducer/reducer";
+} from "../../reducer/slice";
 import { PitchClasses } from "../../../Data";
 import StartingPitchSelector from "./StartingPitchSelector";
 
@@ -20,7 +20,7 @@ const JustTemperamentSelector = () => {
   const descriptions = useSelector(selectDescriptions);
   const currentTemperament = useSelector(selectCurrentTemperament);
   const justTemperamentStartingPitch = useSelector(
-    selectJustTemperamentStartingPitch,
+    selectJustTemperamentStartingPitch
   );
 
   const onSetJustTemperament = React.useCallback(() => {
@@ -33,7 +33,7 @@ const JustTemperamentSelector = () => {
       dispatch(handleSetJustTemperamentStartingPitch({ tonic }));
       onSetJustTemperament();
     },
-    [dispatch, onSetJustTemperament],
+    [dispatch, onSetJustTemperament]
   );
 
   const onClick = React.useCallback(() => {
@@ -41,7 +41,7 @@ const JustTemperamentSelector = () => {
       handleSetDescription({
         path: "just",
         value: !descriptions["just"],
-      }),
+      })
     );
   }, [dispatch, descriptions]);
 

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Waveforms, waveforms } from "../../Data";
-import { synth } from "../reducer/reducer";
+import { synth } from "../reducer/slice";
 
 const WaveSelector = () => {
   const [selectedWave, setSelectedWave] = React.useState("triangle");

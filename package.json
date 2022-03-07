@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@types/howler": "^2.2.5",
     "@types/react-mathjax": "^1.0.1"
   }
 }

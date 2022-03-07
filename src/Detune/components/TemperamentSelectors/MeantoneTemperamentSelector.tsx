@@ -11,8 +11,8 @@ import {
   handleSetDescription,
   handleSetMeantoneTemperamentStartingPitch,
   handleSetRatioBased,
-} from "../../reducer/reducer";
-import { meantoneRatios, PitchClasses } from "../../../Data";
+} from "../../reducer/slice";
+import { PitchClasses } from "../../../Data";
 import StartingPitchSelector from "./StartingPitchSelector";
 
 const MeantoneTemperamentSelector = () => {
@@ -25,9 +25,8 @@ const MeantoneTemperamentSelector = () => {
     dispatch(
       handleSetRatioBased({
         tonic,
-        ratio: meantoneRatios,
         temperamentName: "quarterMeantone",
-      }),
+      })
     );
   }, [tonic, dispatch]);
 
@@ -38,12 +37,11 @@ const MeantoneTemperamentSelector = () => {
       dispatch(
         handleSetRatioBased({
           tonic,
-          ratio: meantoneRatios,
           temperamentName: "quarterMeantone",
-        }),
+        })
       );
     },
-    [dispatch, onSelectTemperament],
+    [dispatch, onSelectTemperament]
   );
 
   const onClick = React.useCallback(() => {
@@ -51,7 +49,7 @@ const MeantoneTemperamentSelector = () => {
       handleSetDescription({
         path: "quarterMeantone",
         value: !descriptions["quarterMeantone"],
-      }),
+      })
     );
   }, [dispatch, descriptions]);
 

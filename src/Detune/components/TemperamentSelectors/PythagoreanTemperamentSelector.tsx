@@ -11,8 +11,8 @@ import {
   handleSetDescription,
   handleSetPythagoreanTemperamentStartingPitch,
   handleSetRatioBased,
-} from "../../reducer/reducer";
-import { PitchClasses, pythagoreanRatios } from "../../../Data";
+} from "../../reducer/slice";
+import { PitchClasses } from "../../../Data";
 import StartingPitchSelector from "./StartingPitchSelector";
 
 const PythagoreanTemperamentSelector = () => {
@@ -25,9 +25,8 @@ const PythagoreanTemperamentSelector = () => {
     dispatch(
       handleSetRatioBased({
         tonic,
-        ratio: pythagoreanRatios,
         temperamentName: "pythagorean",
-      }),
+      })
     );
   }, [tonic, dispatch]);
 
@@ -38,12 +37,11 @@ const PythagoreanTemperamentSelector = () => {
       dispatch(
         handleSetRatioBased({
           tonic,
-          ratio: pythagoreanRatios,
           temperamentName: "pythagorean",
-        }),
+        })
       );
     },
-    [dispatch, onSelectTemperament],
+    [dispatch, onSelectTemperament]
   );
 
   const onClick = React.useCallback(() => {
@@ -51,7 +49,7 @@ const PythagoreanTemperamentSelector = () => {
       handleSetDescription({
         path: "pythagorean",
         value: !descriptions["pythagorean"],
-      }),
+      })
     );
   }, [dispatch, descriptions]);
 

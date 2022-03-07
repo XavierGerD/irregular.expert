@@ -1,5 +1,5 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { IDetuneState, Temperaments } from "./reducer";
+import { IDetuneState, Temperaments } from "./slice";
 
 interface ISetDescriptionPayloadAction {
   path: Temperaments;
@@ -8,7 +8,7 @@ interface ISetDescriptionPayloadAction {
 
 export const setDescription = (
   state: IDetuneState,
-  payload: PayloadAction<ISetDescriptionPayloadAction>,
+  payload: PayloadAction<ISetDescriptionPayloadAction>
 ) => {
   const { value, path } = payload.payload;
   state.descriptions[path] = value;

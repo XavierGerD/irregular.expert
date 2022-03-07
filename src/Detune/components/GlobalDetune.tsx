@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { handleGlobalDetune } from "../reducer/reducer";
+import { handleGlobalDetune } from "../reducer/slice";
 import { selectGlobalDetune } from "../reducer/selectors";
 
 const GlobalDetune = () => {
@@ -11,7 +11,7 @@ const GlobalDetune = () => {
     (event) => {
       dispatch(handleGlobalDetune({ value: event.target.value }));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const id = "global-detune-input";

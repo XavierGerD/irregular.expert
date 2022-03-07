@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { IPitchValue } from "../../reducer/reducer";
+import { IPitchValue } from "../../reducer/slice";
 import NoteFrequency from "./NoteFrequency";
 import NoteRatio from "./NoteRatio";
-import { synth } from "../../reducer/reducer";
+import { synth } from "../../reducer/slice";
 
 import "./Note.css";
 

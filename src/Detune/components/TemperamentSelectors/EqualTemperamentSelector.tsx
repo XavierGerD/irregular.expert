@@ -5,7 +5,7 @@ import { selectDescriptions, selectOctaveSize } from "../../reducer/selectors";
 import {
   handleSetDescription,
   handleSetEqualTemperament,
-} from "../../reducer/reducer";
+} from "../../reducer/slice";
 
 const EqualTemperamentSelector = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const EqualTemperamentSelector = () => {
       handleSetDescription({
         path: "equal",
         value: !descriptions["equal"],
-      }),
+      })
     );
   }, [dispatch, descriptions]);
 

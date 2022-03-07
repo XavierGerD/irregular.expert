@@ -1,7 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import * as Tone from "tone";
 import { pitchClasses, justRatios, JustRatios, PitchClasses } from "../../Data";
-import { IDetuneState, IPitchValue } from "./reducer";
+import { IDetuneState, IPitchValue } from "./slice";
 
 interface ISetEqualTemperamentPayloadAction {
   division: number;
@@ -11,7 +11,7 @@ const getFrequency = (
   baseFrequency: number,
   j: number,
   division: number,
-  i: number,
+  i: number
 ) => baseFrequency * Math.pow(2, j / division) * Math.pow(2, i);
 
 const getPitchValue =
@@ -29,12 +29,12 @@ const getPitchValue =
 
 export const setEqualTemperament = (
   state: IDetuneState,
-  payload: PayloadAction<ISetEqualTemperamentPayloadAction>,
+  payload: PayloadAction<ISetEqualTemperamentPayloadAction>
 ) => {
   const { division } = payload.payload;
 
   const pitchValues = [...new Array(2)].flatMap((_: number, index: number) =>
-    pitchClasses.map(getPitchValue(division, index + 4)),
+    pitchClasses.map(getPitchValue(division, index + 4))
   );
 
   state.pitchValues = pitchValues;
@@ -55,7 +55,7 @@ const getRatiosFromTonic = (index: number) => {
 const getNewFrequency = (
   tonicFrequency: number,
   ratio: JustRatios,
-  octaveMultiplier: number,
+  octaveMultiplier: number
 ) => ((tonicFrequency * ratio[0]) / ratio[1]) * octaveMultiplier;
 
 export const setJustTemperament = (state: IDetuneState) => {

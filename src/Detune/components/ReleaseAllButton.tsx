@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { synth } from "../reducer/reducer";
+import { synth } from "../reducer/slice";
 
 const ReleaseAllButton = () => {
   const onRelease = () => {

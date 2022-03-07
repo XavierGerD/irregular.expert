@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { IPitchValue } from "../../reducer/reducer";
+import { IPitchValue } from "../../reducer/slice";
 import { selectPitchValues } from "../../reducer/selectors";
 import { getIsNoteAltered } from "../../reducer/utils";
 import Note from "./Note";
