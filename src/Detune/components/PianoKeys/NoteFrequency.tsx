@@ -1,19 +1,13 @@
 import * as React from "react";
 
+import "./NoteFrequency.css";
+
 interface INoteFrequencyProps {
   frequency: number;
 }
 
 const NoteFrequency = ({ frequency }: INoteFrequencyProps) => (
-  <div
-    style={{
-      fontSize: "15px",
-      display: "flex",
-      justifyContent: "center",
-    }}
-  >
-    {frequency.toFixed(2)}
-  </div>
+  <div className="note-frequency">{frequency.toFixed(2)}</div>
 );
 
 export default NoteFrequency;
