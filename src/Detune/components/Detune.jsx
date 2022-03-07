@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { handleSetEqualTemperament } from "../reducer/reducer";
 import { synth } from "../reducer/reducer";
-import BlackNotes from "./BlackNotes";
+import BlackNotes from "./PianoKeys/BlackNotes";
 import EqualTemperamentSelector from "./TemperamentSelectors/EqualTemperamentSelector";
 import GlobalDetune from "./GlobalDetune";
 import JustTemperamentSelector from "./TemperamentSelectors/JustTemperamentSelector";
@@ -11,7 +11,7 @@ import MeantoneTemperamentSelector from "./TemperamentSelectors/MeantoneTemperam
 import PythagoreanTemperamentSelector from "./TemperamentSelectors/PythagoreanTemperamentSelector";
 import ReleaseAllButton from "./ReleaseAllButton";
 import WaveSelector from "./WaveSelector";
-import WhiteNotes from "./WhiteNotes";
+import WhiteNotes from "./PianoKeys/WhiteNotes";
 
 import "./Detune.css";
 

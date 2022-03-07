@@ -14,15 +14,14 @@ const GlobalDetune = () => {
     [dispatch],
   );
 
+  const id = "global-detune-input";
+
   return (
     <div className="temperament-selector">
-      Global detune (cents +/-)
+      <label htmlFor={id}>Global detune (cents +/-)</label>
       <input
-        className="rp-inputBox"
-        style={{
-          marginRight: "10px",
-          width: "25px",
-        }}
+        id={id}
+        className="rp-inputBox global-detune-input"
         type="input"
         value={globalDetune}
         onChange={onChange}
