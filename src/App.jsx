@@ -1,33 +1,23 @@
-import React, { Component } from "react";
-import { Route, BrowserRouter, Link } from "react-router-dom";
+import React from "react";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import RhythmPractice from "./Rhythm-practice/RhythmPractice.jsx";
 import DroneGenerator from "./Drone/DroneGenerator";
 import NavBar from "./NavBar.jsx";
-import Detune from "./Detune/Detune.jsx";
+import Detune from "./Detune/components/Detune.jsx";
+import { Provider } from "react-redux";
+import store from "./store/store";
 
-class App extends Component {
-	renderRhythm = () => {
-		return <RhythmPractice />;
-	};
-
-	renderDrone = () => {
-		return <DroneGenerator />;
-	};
-
-	renderDetune = () => {
-		return <Detune />;
-	};
-
-	render = () => {
-		return (
-			<BrowserRouter>
-				<NavBar />
-				<Route exact={true} path="/" render={this.renderRhythm} />
-				<Route exact={true} path="/drone" render={this.renderDrone} />
-				<Route exact={true} path="/detune" render={this.renderDetune} />
-			</BrowserRouter>
-		);
-	};
-}
+const App = () => (
+  <Provider store={store}>
+    <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route exact={true} path="/" element={<RhythmPractice />} />
+        <Route exact={true} path="/drone" element={<DroneGenerator />} />
+        <Route exact={true} path="/detune" element={<Detune />} />
+      </Routes>
+    </BrowserRouter>
+  </Provider>
+);
 
 export default App;
