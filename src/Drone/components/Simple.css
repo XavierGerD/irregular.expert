@@ -1,8 +1,8 @@
 @font-face {
   font-family: "Bravura";
-  src: url("../../public/fonts/woff/Bravura.woff") format("woff"),
-    url("../../public/fonts/svg/Bravura.svg") format("svg"),
-    url("../../public/fonts/otf/Bravura.otf") format("otf");
+  src: url("../../../public/fonts/woff/Bravura.woff") format("woff"),
+    url("../../../public/fonts/svg/Bravura.svg") format("svg"),
+    url("../../../public/fonts/otf/Bravura.otf") format("otf");
 }
 
 * {

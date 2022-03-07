@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as Tone from "tone";
-import Metronome from "./Metronome.jsx";
-import { pitchClassesFromA } from "../Data.ts";
+import Metronome from "../../Metronome/components/Metronome";
+import { pitchClassesFromA } from "../../Data.ts";
 import "./Simple.css";
 
 export default class Simple extends Component {

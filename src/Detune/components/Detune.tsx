@@ -1,8 +1,7 @@
-import React from "react";
+import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import { handleSetEqualTemperament } from "../reducer/reducer";
-import { synth } from "../reducer/reducer";
+import { handleSetEqualTemperament, synth } from "../reducer/slice";
 import BlackNotes from "./PianoKeys/BlackNotes";
 import EqualTemperamentSelector from "./TemperamentSelectors/EqualTemperamentSelector";
 import GlobalDetune from "./GlobalDetune";

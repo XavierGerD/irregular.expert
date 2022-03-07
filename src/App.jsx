@@ -1,9 +1,9 @@
 import React from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import RhythmPractice from "./Rhythm-practice/RhythmPractice.jsx";
-import DroneGenerator from "./Drone/DroneGenerator";
+import RhythmPractice from "./Rhythm-practice/RhythmPractice";
+import DroneGenerator from "./Drone/components/DroneGenerator";
 import NavBar from "./NavBar.jsx";
-import Detune from "./Detune/components/Detune.jsx";
+import Detune from "./Detune/components/Detune";
 import { Provider } from "react-redux";
 import store from "./store/store";
 

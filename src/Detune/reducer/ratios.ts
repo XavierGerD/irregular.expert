@@ -1,11 +1,16 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import * as Tone from "tone";
-import { circleOfFifths, PitchClasses, pitchClasses, IRatio } from "../../Data";
-import { IDetuneState, IPitchValue, Temperaments } from "./reducer";
+import {
+  circleOfFifths,
+  PitchClasses,
+  pitchClasses,
+  meantoneRatios,
+  pythagoreanRatios,
+} from "../../Data";
+import { IDetuneState, IPitchValue, Temperaments } from "./slice";
 
 interface IGetRatioBasedPayloadAction {
   tonic: PitchClasses;
-  ratio: IRatio;
   temperamentName: Temperaments;
 }
 
@@ -54,10 +59,10 @@ const doublePitchValues = (pitchValue: IPitchValue) => ({
 
 const normalizePitchValues = (
   tonicFrequency: number,
-  pitchValues: IPitchValue[],
+  pitchValues: IPitchValue[]
 ) => {
   const upperCPitchValue = pitchValues.find(
-    (pitchValue) => pitchValue.pitchClass === "C",
+    (pitchValue) => pitchValue.pitchClass === "C"
   );
 
   if (!upperCPitchValue) {
@@ -80,35 +85,40 @@ const normalizePitchValues = (
 
 export const setRatioBased = (
   state: IDetuneState,
-  payload: PayloadAction<IGetRatioBasedPayloadAction>,
+  payload: PayloadAction<IGetRatioBasedPayloadAction>
 ) => {
   const octave = 4;
-  const { tonic, ratio, temperamentName } = payload.payload;
+  const { tonic, temperamentName } = payload.payload;
 
-  //find the frequency of the note from which to derive ratios
+  const ratio =
+    temperamentName === "quarterMeantone" ? meantoneRatios : pythagoreanRatios;
+
+  //find the frequency of the note from which to derive all other frequencies.
   const tonicFrequency = Tone.Frequency(tonic + octave).toFrequency();
   const index = circleOfFifths.indexOf(tonic);
 
   // Rearrange the circle of fifths to start on the selected tonic.
-  const merged = circleOfFifths
+  const merged: PitchClasses[] = circleOfFifths
     .slice(index, circleOfFifths.length)
     .concat(circleOfFifths.slice(0, index));
 
-  const firstHalf = merged.slice(0, 6);
-  const secondHalf = merged.slice(6, merged.length).reverse();
+  // Execute the algorithm in both directions
+  // (ascending fifths and descending fifths (ascending fourths)).
+  // This ensures that the wolf fifth is always as far
+  // from the tonic as possible.
+  const firstHalf = merged
+    .slice(0, 6)
+    .reduce(getPitchValues(tonicFrequency, octave, ratio.fifth), []);
 
-  const firstHalfMapped = firstHalf.reduce(
-    getPitchValues(tonicFrequency, octave, ratio.fifth),
-    [],
-  );
+  const secondHalf = merged
+    .slice(6)
+    .reverse()
+    .reduce(getPitchValues(tonicFrequency, octave, ratio.fourth), [
+      firstHalf[0],
+    ])
+    .slice(1);
 
-  const secondHalfMapped = secondHalf.reduce(
-    getPitchValues(tonicFrequency, octave, ratio.fourth),
-    [firstHalfMapped[0]],
-  );
-  secondHalfMapped.shift();
-
-  const mergedMapped = [...firstHalfMapped, ...secondHalfMapped];
+  const mergedMapped = [...firstHalf, ...secondHalf];
   const octavized = normalizePitchValues(tonicFrequency, mergedMapped);
   const sorted = octavized.sort(sortPitchClasses);
   const doubled = sorted.map(doublePitchValues);
