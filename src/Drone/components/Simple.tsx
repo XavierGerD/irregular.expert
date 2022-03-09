@@ -69,7 +69,11 @@ const Simple = () => {
 
       <div className="simple-container">
         <VolumeAdjust />
-        <PianoKeys monophonic={true} selectNotes={selectPitchValues} />
+        <PianoKeys
+          showFrequency={false}
+          monophonic={true}
+          selectNotes={selectPitchValues}
+        />
       </div>
       <ReleaseAllButton />
     </div>

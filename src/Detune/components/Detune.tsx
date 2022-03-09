@@ -43,7 +43,7 @@ const Detune = () => {
     <div className="detune-container">
       <div>
         <Instructions instructions={instructions} />
-        <PianoKeys selectNotes={selectPitchValues} />
+        <PianoKeys showNoteName={true} selectNotes={selectPitchValues} />
         <div className="detune-selector">
           <WaveSelector />
           <ReleaseAllButton />
