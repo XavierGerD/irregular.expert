@@ -1,0 +1,30 @@
+.octave-selector-container {
+  display: flex;
+}
+
+.octave-selector {
+  font-family: "Raleway", sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  height: 40px;
+  width: 40px;
+  border: 2px solid black;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.octave-selector.selected {
+  background-color: black;
+  color: white;
+}
+
+.octave-selector:hover {
+  background-color: #e6e6e6;
+}
+
+.octave-selector.selected:hover {
+  background-color: black;
+}

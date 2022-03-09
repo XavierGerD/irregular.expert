@@ -1,5 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { IDetuneState, IPitchValue } from "./slice";
+import { IDetuneState } from "./slice";
+import { IPitchValue } from "../../Data";
 
 interface IHandleGlobalDetunePayloadAction {
   value: number;

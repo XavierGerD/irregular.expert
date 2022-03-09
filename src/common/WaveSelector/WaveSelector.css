@@ -1,0 +1,25 @@
+.waveselector {
+  font-family: "Raleway", sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  height: 30px;
+  width: 100px;
+  border: 2px solid black;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.waveselector.selected {
+  background-color: black;
+  color: white;
+}
+
+.waveselector:hover {
+  background-color: #e6e6e6;
+}
+
+.waveselector.selected:hover {
+  background-color: black;
+}

@@ -1,0 +1,38 @@
+.blacknotes {
+  position: relative;
+  display: flex;
+  margin-left: 40px;
+  height: 130px;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.blacknotebutton {
+  font-family: "Raleway", sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  width: 50px;
+  height: 130px;
+  border: 2px solid black;
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  margin-right: 11px;
+  background-color: black;
+  color: white;
+  word-wrap: break-word;
+  pointer-events: all;
+}
+
+.blacknotebutton.selected {
+  background-color: #6b6b6b;
+}
+
+.blacknotebutton:hover {
+  background-color: #4a4a4a;
+}
+
+.blacknotebutton.selected:hover {
+  background-color: #6b6b6b;
+}

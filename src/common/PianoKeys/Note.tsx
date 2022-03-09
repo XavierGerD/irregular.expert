@@ -1,21 +1,26 @@
 import * as React from "react";
 
-import { IPitchValue } from "../../reducer/slice";
+import { IPitchValue } from "../../Data";
 import NoteFrequency from "./NoteFrequency";
 import NoteRatio from "./NoteRatio";
-import { synth } from "../../reducer/slice";
+import { synth, setNote as setSynthNote, releaseAll } from "../synth";
 
 import "./Note.css";
 
 interface IBlackNoteProps {
+  monophonic?: boolean;
   note: IPitchValue;
   className: string;
 }
 
-const Note = ({ note, className }: IBlackNoteProps) => {
-  const setNote = () => {
-    synth.triggerAttack(note.frequency);
-  };
+const Note = ({ monophonic = false, note, className }: IBlackNoteProps) => {
+  const setNote = React.useCallback(() => {
+    if (monophonic) {
+      releaseAll();
+    }
+
+    setSynthNote(note.frequency);
+  }, [note, monophonic]);
 
   return (
     <div className={className} onClick={setNote}>

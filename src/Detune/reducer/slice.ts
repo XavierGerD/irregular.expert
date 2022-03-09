@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import * as Tone from "tone";
 
 import { setGlobalDetune } from "./globalDetune";
-import { JustRatios, PitchClasses, Waveforms } from "../../Data";
+import { IPitchValue, PitchClasses, Waveforms } from "../../Data";
 import { setRatioBased } from "./ratios";
 import { setDescription } from "./descriptions";
 import { setEqualTemperament, setJustTemperament } from "./temperaments";
@@ -16,17 +15,6 @@ export type NoteColor = "black" | "white";
 
 export type Temperaments = "equal" | "just" | "pythagorean" | "quarterMeantone";
 type Descriptions = { [T in Temperaments]: boolean };
-
-export interface IPitchValue {
-  ratio: JustRatios | undefined;
-  pitchClass: PitchClasses;
-  octave: number;
-  frequency: number;
-}
-
-export const synth = new Tone.PolySynth(Tone.Synth, {
-  oscillator: { type: "triangle" },
-}).toDestination();
 
 export interface IDetuneState {
   octave: number;

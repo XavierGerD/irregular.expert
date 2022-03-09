@@ -1,13 +1,19 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { IPitchValue } from "../../reducer/slice";
-import { selectPitchValues } from "../../reducer/selectors";
-import { getIsNoteAltered } from "../../reducer/utils";
+import { IPitchValue } from "../../Data";
+import { getIsNoteAltered } from "../../Detune/reducer/utils";
 import Note from "./Note";
+import { SelectNotes } from "./PianoKeys";
 
-const WhiteNotes = () => {
-  const notes = useSelector(selectPitchValues);
+import "./WhiteNotes.css";
+
+interface IWhiteNotesProps {
+  monophonic?: boolean;
+  selectNotes: SelectNotes;
+}
+const WhiteNotes = ({ monophonic, selectNotes }: IWhiteNotesProps) => {
+  const notes = useSelector(selectNotes);
 
   return (
     <div className="whitenotes">
@@ -21,6 +27,7 @@ const WhiteNotes = () => {
             key={note.frequency}
             note={note}
             className={"whitenotebutton"}
+            monophonic={monophonic}
           />
         );
       })}
