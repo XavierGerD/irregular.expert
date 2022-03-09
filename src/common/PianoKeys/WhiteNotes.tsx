@@ -10,9 +10,16 @@ import "./WhiteNotes.css";
 
 interface IWhiteNotesProps {
   monophonic?: boolean;
+  showFrequency?: boolean;
+  showNoteName?: boolean;
   selectNotes: SelectNotes;
 }
-const WhiteNotes = ({ monophonic, selectNotes }: IWhiteNotesProps) => {
+const WhiteNotes = ({
+  monophonic,
+  showFrequency,
+  showNoteName,
+  selectNotes,
+}: IWhiteNotesProps) => {
   const notes = useSelector(selectNotes);
 
   return (
@@ -28,6 +35,8 @@ const WhiteNotes = ({ monophonic, selectNotes }: IWhiteNotesProps) => {
             note={note}
             className={"whitenotebutton"}
             monophonic={monophonic}
+            showFrequency={showFrequency}
+            showNoteName={showNoteName}
           />
         );
       })}

@@ -10,14 +10,31 @@ import "./PianoKeys.css";
 export type SelectNotes = (state: RootState) => IPitchValue[];
 
 interface IPianoKeysProps {
-  monophonic?: boolean;
   selectNotes: SelectNotes;
+  monophonic?: boolean;
+  showFrequency?: boolean;
+  showNoteName?: boolean;
 }
 
-const PianoKeys = ({ monophonic, selectNotes }: IPianoKeysProps) => (
+const PianoKeys = ({
+  monophonic,
+  showFrequency,
+  showNoteName,
+  selectNotes,
+}: IPianoKeysProps) => (
   <div className="piano-keys">
-    <BlackNotes monophonic={monophonic} selectNotes={selectNotes} />
-    <WhiteNotes monophonic={monophonic} selectNotes={selectNotes} />
+    <BlackNotes
+      showFrequency={showFrequency}
+      monophonic={monophonic}
+      showNoteName={showNoteName}
+      selectNotes={selectNotes}
+    />
+    <WhiteNotes
+      showFrequency={showFrequency}
+      monophonic={monophonic}
+      showNoteName={showNoteName}
+      selectNotes={selectNotes}
+    />
   </div>
 );
 

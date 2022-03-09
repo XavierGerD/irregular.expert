@@ -10,10 +10,17 @@ import "./BlackNotes.css";
 
 interface IBlackNotesProps {
   monophonic?: boolean;
+  showFrequency?: boolean;
+  showNoteName?: boolean;
   selectNotes: SelectNotes;
 }
 
-const BlackNotes = ({ monophonic, selectNotes }: IBlackNotesProps) => {
+const BlackNotes = ({
+  monophonic,
+  showFrequency,
+  showNoteName,
+  selectNotes,
+}: IBlackNotesProps) => {
   const notes = useSelector(selectNotes);
 
   return (
@@ -32,6 +39,8 @@ const BlackNotes = ({ monophonic, selectNotes }: IBlackNotesProps) => {
               className={"blacknotebutton"}
               note={note}
               monophonic={monophonic}
+              showFrequency={showFrequency}
+              showNoteName={showNoteName}
             />
             {addSpacer && <div className="notespacer" />}
           </>
