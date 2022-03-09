@@ -1,0 +1,16 @@
+.instructions {
+  width: 100%;
+  word-wrap: break-word;
+  margin-top: 25px;
+  font-family: "Raleway", sans-serif;
+  display: flex;
+  justify-content: center;
+  font-size: 18px;
+}
+
+@media (max-width: 850px) {
+  .instructions {
+    font-size: 14px;
+    width: 90vw;
+  }
+}

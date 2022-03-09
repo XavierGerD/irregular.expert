@@ -1,7 +1,8 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import * as Tone from "tone";
 import { pitchClasses, justRatios, JustRatios, PitchClasses } from "../../Data";
-import { IDetuneState, IPitchValue } from "./slice";
+import { IDetuneState } from "./slice";
+import { IPitchValue } from "../../Data";
 
 interface ISetEqualTemperamentPayloadAction {
   division: number;

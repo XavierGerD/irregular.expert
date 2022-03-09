@@ -7,7 +7,8 @@ import {
   meantoneRatios,
   pythagoreanRatios,
 } from "../../Data";
-import { IDetuneState, IPitchValue, Temperaments } from "./slice";
+import { IDetuneState, Temperaments } from "./slice";
+import { IPitchValue } from "../../Data";
 
 interface IGetRatioBasedPayloadAction {
   tonic: PitchClasses;

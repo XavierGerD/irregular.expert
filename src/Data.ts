@@ -15,21 +15,6 @@ export const justRatios = [
 
 export type JustRatios = typeof justRatios[number];
 
-// let pythagoreanRatios = [
-// 	[1, 1],
-// 	[256, 243],
-// 	[9, 8],
-// 	[32, 27],
-// 	[81, 64],
-// 	[4, 3],
-// 	[729, 512],
-// 	[3, 2],
-// 	[128, 81],
-// 	[27, 16],
-// 	[16, 9],
-// 	[243, 128]
-// ];
-
 export const pitchClasses = [
   "C",
   "Db",
@@ -98,3 +83,10 @@ export const pythagoreanRatios: IRatio = {
 
 export const waveforms = ["sine", "square", "triangle", "sawtooth"] as const;
 export type Waveforms = typeof waveforms[number];
+
+export interface IPitchValue {
+  ratio: JustRatios | undefined;
+  pitchClass: PitchClasses;
+  octave: number;
+  frequency: number;
+}

@@ -68,3 +68,7 @@
 .dropdown-select:focus {
   outline: none;
 }
+
+.volume-adjust {
+  transform: translate(-90px, 25px);
+}
