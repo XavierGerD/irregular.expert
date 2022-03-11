@@ -8,6 +8,15 @@
   font-size: 18px;
 }
 
+.instructions-narrow {
+  width: 450px;
+  word-wrap: break-word;
+  margin-top: 30px;
+  font-family: "Raleway", sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
 @media (max-width: 850px) {
   .instructions {
     font-size: 14px;

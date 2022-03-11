@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { IPitchValue } from "../../Data";
+import { IPitchValue } from "../types";
 import { getIsNoteAltered } from "../../Detune/reducer/utils";
 import Note from "./Note";
 import { SelectNotes } from "./PianoKeys";

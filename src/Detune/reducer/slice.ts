@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { setGlobalDetune } from "./globalDetune";
-import { IPitchValue, PitchClasses, Waveforms } from "../../Data";
+import { IPitchValue, PitchClasse, Waveforms } from "../../common/types";
 import { setRatioBased } from "./ratios";
 import { setDescription } from "./descriptions";
 import { setEqualTemperament, setJustTemperament } from "./temperaments";
@@ -25,9 +25,9 @@ export interface IDetuneState {
   currentTemperament: Temperaments | undefined;
   showFrequencies: boolean;
   octaveSize: number;
-  justTemperamentStartingPitch: PitchClasses;
-  pythagoreanTemperamentStartingPitch: PitchClasses;
-  meantoneTemperamentStartingPitch: PitchClasses;
+  justTemperamentStartingPitch: PitchClasse;
+  pythagoreanTemperamentStartingPitch: PitchClasse;
+  meantoneTemperamentStartingPitch: PitchClasse;
   descriptions: Descriptions;
 }
 

@@ -2,22 +2,22 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import * as Tone from "tone";
 import {
   circleOfFifths,
-  PitchClasses,
+  PitchClasse,
   pitchClasses,
   meantoneRatios,
   pythagoreanRatios,
-} from "../../Data";
+} from "../../common/types";
 import { IDetuneState, Temperaments } from "./slice";
-import { IPitchValue } from "../../Data";
+import { IPitchValue } from "../../common/types";
 
 interface IGetRatioBasedPayloadAction {
-  tonic: PitchClasses;
+  tonic: PitchClasse;
   temperamentName: Temperaments;
 }
 
 const getPitchValues =
   (tonicFrequency: number, octave: number, ratio: number) =>
-  (pitchValues: IPitchValue[], pitchClass: PitchClasses) => {
+  (pitchValues: IPitchValue[], pitchClass: PitchClasse) => {
     let frequency = tonicFrequency;
     if (pitchValues.length === 0) {
       return [
@@ -99,7 +99,7 @@ export const setRatioBased = (
   const index = circleOfFifths.indexOf(tonic);
 
   // Rearrange the circle of fifths to start on the selected tonic.
-  const merged: PitchClasses[] = circleOfFifths
+  const merged: PitchClasse[] = circleOfFifths
     .slice(index, circleOfFifths.length)
     .concat(circleOfFifths.slice(0, index));
 

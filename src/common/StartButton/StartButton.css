@@ -1,0 +1,22 @@
+#start {
+  width: 150px;
+  height: 80px;
+  font-family: "Raleway", sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: #096848;
+  background-color: #10bc83;
+  border-radius: 16px;
+  border: none;
+  box-shadow: 3px 3px #096848;
+  margin-bottom: 5px;
+  margin-right: 10px;
+}
+
+#start:focus {
+  outline: none;
+}
+
+#start:hover {
+  background-color: #0ea170;
+}

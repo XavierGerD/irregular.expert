@@ -30,7 +30,8 @@ export const pitchClasses = [
   "B",
 ] as const;
 
-export type PitchClasses = typeof pitchClasses[number];
+export type PitchClasse = typeof pitchClasses[number];
+export type Pitch = `${PitchClasse}${number}`;
 
 export const pitchClassesFromA = [
   "A",
@@ -86,7 +87,13 @@ export type Waveforms = typeof waveforms[number];
 
 export interface IPitchValue {
   ratio: JustRatios | undefined;
-  pitchClass: PitchClasses;
+  pitchClass: PitchClasse;
   octave: number;
   frequency: number;
+}
+
+export interface IRhythmicEvent {
+  note: Pitch;
+  beats: number;
+  position: number;
 }

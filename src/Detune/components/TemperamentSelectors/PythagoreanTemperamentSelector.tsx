@@ -12,7 +12,7 @@ import {
   handleSetPythagoreanTemperamentStartingPitch,
   handleSetRatioBased,
 } from "../../reducer/slice";
-import { PitchClasses } from "../../../Data";
+import { PitchClasse } from "../../../common/types";
 import StartingPitchSelector from "./StartingPitchSelector";
 
 const PythagoreanTemperamentSelector = () => {
@@ -32,7 +32,7 @@ const PythagoreanTemperamentSelector = () => {
 
   const onSelectStartingPitch = React.useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const tonic = event.target.value as PitchClasses;
+      const tonic = event.target.value as PitchClasse;
       dispatch(handleSetPythagoreanTemperamentStartingPitch({ tonic }));
       dispatch(
         handleSetRatioBased({

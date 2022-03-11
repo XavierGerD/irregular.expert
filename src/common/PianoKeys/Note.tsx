@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { IPitchValue } from "../../Data";
+import { IPitchValue } from "../types";
 import NoteFrequency from "./NoteFrequency";
 import NoteRatio from "./NoteRatio";
 import { setNote as setSynthNote, releaseAll } from "../synth";

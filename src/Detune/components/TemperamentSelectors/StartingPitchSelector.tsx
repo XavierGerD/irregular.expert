@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { pitchClasses } from "../../../Data";
+import { pitchClasses } from "../../../common/types";
 
 interface IStartingPitchSelectorProps {
   selectedValue: string;
@@ -15,11 +15,7 @@ const StartingPitchSelector = ({
 }: IStartingPitchSelectorProps) => (
   <select className="dropdown-select" disabled={disabled} onChange={onChange}>
     {pitchClasses.map((pitchClass) => (
-      <option
-        selected={pitchClass === selectedValue}
-        key={pitchClass}
-        value={pitchClass}
-      >
+      <option defaultValue={selectedValue} key={pitchClass} value={pitchClass}>
         {pitchClass}
       </option>
     ))}

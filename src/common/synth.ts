@@ -1,11 +1,11 @@
 import * as Tone from "tone";
-import { PitchClasses } from "../Data";
+import { PitchClasse } from "./types";
 
 export const synth = new Tone.PolySynth(Tone.Synth, {
   oscillator: { type: "triangle" },
 }).toDestination();
 
-export const setNote = (note: PitchClasses | number) => {
+export const setNote = (note: PitchClasse | number) => {
   synth.triggerAttack(note);
 };
 

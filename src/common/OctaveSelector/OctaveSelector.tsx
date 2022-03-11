@@ -19,7 +19,7 @@ const OctaveSelector = ({ selectedOctave, onChange }: IOctaveSelectorProps) => (
             : "octave-selector";
 
         return (
-          <div className={className} onClick={onChange(octave)}>
+          <div key={index} className={className} onClick={onChange(octave)}>
             {octave}
           </div>
         );

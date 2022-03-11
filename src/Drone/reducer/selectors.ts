@@ -5,8 +5,29 @@ const getState = (state: RootState) => state.droneSlice;
 
 export const selectPitchValues = createSelector(
   getState,
-  (state) => state.pitchValues
+  (state) => state.detune.pitchValues
 );
 
-export const selectTuning = createSelector(getState, (state) => state.tuning);
-export const selectOctave = createSelector(getState, (state) => state.octave);
+export const selectTuning = createSelector(
+  getState,
+  (state) => state.detune.tuning
+);
+export const selectOctave = createSelector(
+  getState,
+  (state) => state.detune.octave
+);
+
+export const selectEvents = createSelector(
+  getState,
+  (state) => state.looper.events
+);
+
+export const selectTempo = createSelector(
+  getState,
+  (state) => state.looper.tempo
+);
+
+export const selectIsPlaying = createSelector(
+  getState,
+  (state) => state.looper.isPlaying
+);

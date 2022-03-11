@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import Simple from "./Simple";
-// import Looper from "./Looper";
+import Simple from "../components/Simple/Simple";
+import Looper from "../components/Looper/Looper";
 
 import "./DroneGenerator.css";
 
@@ -32,7 +32,7 @@ const DroneGenerator = () => {
         </div>
       </div>
 
-      <div>{mode === "simple" ? <Simple /> : <div />}</div>
+      <div>{mode === "simple" ? <Simple /> : <Looper />}</div>
     </div>
   );
 };

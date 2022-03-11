@@ -1,9 +1,9 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { PitchClasses } from "../../Data";
+import { PitchClasse } from "../../common/types";
 import { IDetuneState } from "./slice";
 
 interface ISetTemperamentStartingPitchPayloadAction {
-  tonic: PitchClasses;
+  tonic: PitchClasse;
 }
 
 export const setPythagoreanTemperamentStartingPitch = (

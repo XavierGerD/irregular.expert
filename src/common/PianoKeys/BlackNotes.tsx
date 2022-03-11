@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { IPitchValue } from "../../Data";
+import { IPitchValue } from "../types";
 import { getIsNoteAltered } from "../../Detune/reducer/utils";
 import Note from "./Note";
 import { SelectNotes } from "./PianoKeys";
@@ -33,9 +33,8 @@ const BlackNotes = ({
         const addSpacer = note.pitchClass === "Eb" || note.pitchClass === "Bb";
 
         return (
-          <>
+          <React.Fragment key={note.frequency}>
             <Note
-              key={note.frequency}
               className={"blacknotebutton"}
               note={note}
               monophonic={monophonic}
@@ -43,7 +42,7 @@ const BlackNotes = ({
               showNoteName={showNoteName}
             />
             {addSpacer && <div className="notespacer" />}
-          </>
+          </React.Fragment>
         );
       })}
     </div>

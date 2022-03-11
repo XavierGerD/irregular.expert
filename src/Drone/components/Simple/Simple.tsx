@@ -1,22 +1,22 @@
 import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import Metronome from "../../Metronome/components/Metronome";
-import PianoKeys from "../../common/PianoKeys/PianoKeys";
+import Metronome from "../../../Metronome/components/Metronome";
+import PianoKeys from "../../../common/PianoKeys/PianoKeys";
 import {
   selectTuning,
   selectPitchValues,
   selectOctave,
-} from "../../Drone/reducer/selectors";
-import { useDispatch, useSelector } from "react-redux";
-import { handleSetOctave, handleSetTuning } from "../reducer/slice";
-import OctaveSelector from "../../common/OctaveSelector/OctaveSelector";
-import WaveSelector from "../../common/WaveSelector/WaveSelector";
-import VolumeAdjust from "../../common/VolumeAdjust/VolumeAdjust";
-import Instructions from "../../common/Instructions/Instructions";
-import { instructions } from "../instructions";
-import ReleaseAllButton from "../../common/ReleaseAllButton/ReleaseAllButton";
-import { releaseAll } from "../../common/synth";
-import GlobalDetune from "../../common/GlobalDetune/GlobalDetune";
+} from "../../../Drone/reducer/selectors";
+import { handleSetOctave, handleSetTuning } from "../../reducer/slice";
+import OctaveSelector from "../../../common/OctaveSelector/OctaveSelector";
+import WaveSelector from "../../../common/WaveSelector/WaveSelector";
+import VolumeAdjust from "../../../common/VolumeAdjust/VolumeAdjust";
+import Instructions from "../../../common/Instructions/Instructions";
+import { instructions } from "../Simple/instructions";
+import ReleaseAllButton from "../../../common/ReleaseAllButton/ReleaseAllButton";
+import { releaseAll } from "../../../common/synth";
+import GlobalDetune from "../../../common/GlobalDetune/GlobalDetune";
 
 import "./Simple.css";
 
