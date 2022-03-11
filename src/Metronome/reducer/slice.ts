@@ -8,13 +8,10 @@ interface ISetTempoPayloadAction {
 
 export interface IMetronomeState {
   tempo: number;
-  lastClick: number;
 }
 
 const createInitialState = (): IMetronomeState => ({
   tempo: 60,
-  // @ts-ignore
-  lastClick: new Date() / 1,
 });
 
 const metronomeSlice = createSlice({

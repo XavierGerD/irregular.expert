@@ -1,8 +1,13 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import * as Tone from "tone";
-import { pitchClasses, justRatios, JustRatios, PitchClasses } from "../../Data";
+import {
+  pitchClasses,
+  justRatios,
+  JustRatios,
+  PitchClasse,
+} from "../../common/types";
 import { IDetuneState } from "./slice";
-import { IPitchValue } from "../../Data";
+import { IPitchValue } from "../../common/types";
 
 interface ISetEqualTemperamentPayloadAction {
   division: number;
@@ -17,7 +22,7 @@ const getFrequency = (
 
 const getPitchValue =
   (division: number, i: number) =>
-  (pitchClass: PitchClasses, j: number): IPitchValue => {
+  (pitchClass: PitchClasse, j: number): IPitchValue => {
     const baseFrequency = Tone.Frequency("C0").toFrequency();
 
     return {

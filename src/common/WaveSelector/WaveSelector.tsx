@@ -1,12 +1,12 @@
 import * as React from "react";
 
-import { Waveforms, waveforms } from "../../Data";
+import { Waveforms, waveforms } from "../types";
 import { synth } from "../synth";
 
 import "./WaveSelector.css";
 
 const WaveSelector = () => {
-  const [selectedWave, setSelectedWave] = React.useState("triangle");
+  const [selectedWave, setSelectedWave] = React.useState<Waveforms>("triangle");
 
   const onClick = (waveForm: Waveforms) => () => {
     setSelectedWave(waveForm);

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { IPitchValue } from "../../Data";
+import { IPitchValue } from "../types";
 import { RootState } from "../../store/store";
 import BlackNotes from "./BlackNotes";
 import WhiteNotes from "./WhiteNotes";

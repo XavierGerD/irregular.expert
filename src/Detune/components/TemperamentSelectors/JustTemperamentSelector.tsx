@@ -12,7 +12,7 @@ import {
   handleSetJustTemperament,
   handleSetJustTemperamentStartingPitch,
 } from "../../reducer/slice";
-import { PitchClasses } from "../../../Data";
+import { PitchClasse } from "../../../common/types";
 import StartingPitchSelector from "./StartingPitchSelector";
 
 const JustTemperamentSelector = () => {
@@ -29,7 +29,7 @@ const JustTemperamentSelector = () => {
 
   const onSelectStartingPitch = React.useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const tonic = event.target.value as PitchClasses;
+      const tonic = event.target.value as PitchClasse;
       dispatch(handleSetJustTemperamentStartingPitch({ tonic }));
       onSetJustTemperament();
     },

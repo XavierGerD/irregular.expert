@@ -12,7 +12,7 @@ import {
   handleSetMeantoneTemperamentStartingPitch,
   handleSetRatioBased,
 } from "../../reducer/slice";
-import { PitchClasses } from "../../../Data";
+import { PitchClasse } from "../../../common/types";
 import StartingPitchSelector from "./StartingPitchSelector";
 
 const MeantoneTemperamentSelector = () => {
@@ -32,7 +32,7 @@ const MeantoneTemperamentSelector = () => {
 
   const onSelectStartingPitch = React.useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const tonic = event.target.value as PitchClasses;
+      const tonic = event.target.value as PitchClasse;
       dispatch(handleSetMeantoneTemperamentStartingPitch({ tonic }));
       dispatch(
         handleSetRatioBased({

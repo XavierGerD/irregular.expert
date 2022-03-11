@@ -4,12 +4,15 @@ import "./Instructions.css";
 
 interface IInstructionsProps {
   instructions: string[];
+  narrow?: boolean;
 }
 
-const Instructions = ({ instructions }: IInstructionsProps) => (
+const Instructions = ({ instructions, narrow }: IInstructionsProps) => (
   <div>
-    {instructions.map((instruction: string) => (
-      <div className="instructions">{instruction}</div>
+    {instructions.map((instruction: string, index: number) => (
+      <div key={index} className={"instructions" + (narrow ? "-narrow" : "")}>
+        {instruction}
+      </div>
     ))}
   </div>
 );

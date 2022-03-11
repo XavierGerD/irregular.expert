@@ -1,0 +1,21 @@
+#stop {
+  width: 150px;
+  height: 80px;
+  font-family: "Raleway", sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: #631d19;
+  background-color: #f0483e;
+  border-radius: 16px;
+  border: none;
+  box-shadow: 3px 3px #631d19;
+  margin-bottom: 5px;
+}
+
+#stop:focus {
+  outline: none;
+}
+
+#stop:hover {
+  background-color: #d43026;
+}

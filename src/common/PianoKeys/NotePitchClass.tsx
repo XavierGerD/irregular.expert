@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { PitchClasses } from "../../Data";
+import { PitchClasse } from "../types";
 
 interface INotePitchClassProps {
-  pitchClass: PitchClasses;
+  pitchClass: PitchClasse;
 }
 
 const NotePitchClass = ({ pitchClass }: INotePitchClassProps) => (

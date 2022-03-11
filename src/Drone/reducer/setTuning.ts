@@ -1,19 +1,23 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { IPitchValue, PitchClasses, pitchClassesFromA } from "../../Data";
-import { IDroneSubState } from "./slice";
+import {
+  IPitchValue,
+  PitchClasse,
+  pitchClassesFromA,
+} from "../../common/types";
+import { IDroneState } from "./slice";
 
 interface ISetTuningPayloadAction {
   tuning: number;
 }
 
 export const setTuning = (
-  state: IDroneSubState,
+  state: IDroneState,
   payload: PayloadAction<ISetTuningPayloadAction>
 ) => {
   const { tuning } = payload.payload;
 
   const newPitchClasses = pitchClassesFromA.map(
-    (pitchClass: PitchClasses, i: number): IPitchValue => ({
+    (pitchClass: PitchClasse, i: number): IPitchValue => ({
       octave: 4,
       pitchClass,
       frequency: (tuning * Math.pow(2, i / 12)) / 2,
@@ -27,7 +31,7 @@ export const setTuning = (
     ratio: undefined,
     octave: 5,
   });
-  console.log({ newPitchClasses });
-  state.pitchValues = newPitchClasses;
-  state.tuning = tuning;
+
+  state.detune.pitchValues = newPitchClasses;
+  state.detune.tuning = tuning;
 };
