@@ -1,8 +1,8 @@
 @font-face {
   font-family: "Bravura";
-  src: url("../../public/fonts/woff/Bravura.woff") format("woff"),
-    url("../../public/fonts/svg/Bravura.svg") format("svg"),
-    url("../../public/fonts/otf/Bravura.otf") format("otf");
+  src: url("../../../public/fonts/woff/Bravura.woff") format("woff"),
+    url("../../../public/fonts/svg/Bravura.svg") format("svg"),
+    url("../../../public/fonts/otf/Bravura.otf") format("otf");
 }
 
 .rp-button {
@@ -32,6 +32,8 @@
 }
 
 .practiceMain {
+  font-family: "Bravura";
+  font-size: 60px;
   padding-top: 50px;
   position: relative;
   line-height: 0px;
@@ -65,22 +67,15 @@
 .rp-bars {
   display: flex;
   justify-content: space-between;
-  /* position: absolute; */
 }
 
 .rp-singlestaff {
-  font-family: "Bravura";
-  font-size: 60px;
   position: absolute;
   padding-top: 30px;
-  /* margin-left: 37.5px; */
-  /* transform-origin: center; */
   transform: scaleX(28);
 }
 
 .rp-bar {
-  font-family: "Bravura";
-  font-size: 60px;
   display: flex;
   position: relative;
 }
@@ -92,8 +87,6 @@
 }
 
 .rp-note {
-  font-family: "Bravura";
-  font-size: 60px;
   display: flex;
 }
 
@@ -154,6 +147,21 @@
   font-family: "Raleway", sans-serif;
   font-size: 18px;
   max-width: 300px;
+}
+
+.start-stop-container {
+  margin-bottom: 20px;
+  margin-top: -30px;
+  width: 445px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.main-practice-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }
 
 @media (max-width: 850px) {

@@ -1,9 +1,9 @@
-import { timeSignatureCodes } from "../UnicodeAssignment.js";
-import reducer from "./reducer.js";
+import { timeSignatureCodes } from "../UnicodeAssignment";
+
 
 let getTimeSig = (e, sig, i, mode) => {
 	// in bar mode, 8 eight note is actually 4/4
-	e = e.reduce(reducer, 0);
+
 	if (mode === "bar" && e === 8) {
 		e = 4;
 	}

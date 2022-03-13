@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import RhythmPractice from "./Rhythm-practice/RhythmPractice";
+import RhythmPractice from "./RhythmPractice/components/RhythmPractice";
 import DroneGenerator from "./Drone/components/DroneGenerator";
 import NavBar from "./NavBar.jsx";
 import Detune from "./Detune/components/Detune";

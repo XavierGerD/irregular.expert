@@ -17,9 +17,9 @@ import { selectGlobalDetune, selectPitchValues } from "../reducer/selectors";
 import { synth } from "../../common/synth";
 import Instructions from "../../common/Instructions/Instructions";
 import { instructions } from "../instructions";
+import VolumeAdjust from "../../common/VolumeAdjust/VolumeAdjust";
 
 import "./Detune.css";
-import VolumeAdjust from "../../common/VolumeAdjust/VolumeAdjust";
 
 const Detune = () => {
   const dispatch = useDispatch();
