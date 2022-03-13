@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { RootState } from "../../store/store";
-import { selectIsBarMode, selectTimeSignature } from "../reducer/selectors";
+import { RootState } from "../../../store/store";
+import { selectIsBarMode, selectTimeSignature } from "../../reducer/selectors";
 import Figures from "./Figures";
 import TupletBrackets from "./TupletBrackets";
 import TimeSignature from "./TimeSignature";
-import { TupletValues } from "../../UnicodeAssignment";
+import { TupletValues } from "../../../UnicodeAssignment";
 
 import "./Bar.css";
 

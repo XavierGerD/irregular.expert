@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { barlines } from "../../UnicodeAssignment";
-import { selectHasStarted } from "../reducer/selectors";
+import { barlines } from "../../../UnicodeAssignment";
+import { selectHasStarted } from "../../reducer/selectors";
 import Bar from "./Bar";
 
 const Bars = () => {

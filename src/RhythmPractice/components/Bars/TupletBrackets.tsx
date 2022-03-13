@@ -3,7 +3,7 @@ import {
   tupletBracketCodes,
   tupletCodes,
   TupletValues,
-} from "../../UnicodeAssignment";
+} from "../../../UnicodeAssignment";
 
 interface ITupletBracketsProps {
   tupletLength: TupletValues;

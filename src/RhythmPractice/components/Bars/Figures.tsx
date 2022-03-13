@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { RootState } from "../../store/store";
-import { FirstEvent, LastEvent, MiddleEvents } from "../components/Beamchecker";
-import { selectRhythmicEvents, selectIsBarMode } from "../reducer/selectors";
+import { RootState } from "../../../store/store";
+import { FirstEvent, LastEvent, MiddleEvents } from "./Events";
+import { selectRhythmicEvents, selectIsBarMode } from "../../reducer/selectors";
 
 interface IFiguresProps {
   index: number;
