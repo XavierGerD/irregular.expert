@@ -1,19 +1,27 @@
-import { TupletValues } from "../../UnicodeAssignment";
+import { tupletCodes, TupletValues } from "../../UnicodeAssignment";
 import { RhythmicUnitKeys, RHYTHMIC_UNITS } from "../RhythmicUnits";
-import { CheckedRhythmicUnits, RhythmicEvent, RhythmicUnit } from "./slice";
+import {
+  CheckedRhythmicUnits,
+  CheckedTupletValues,
+  RhythmicEvent,
+  RhythmicUnit,
+} from "./slice";
+
+export const getFigure = (
+  rhythmicUnit: RhythmicUnit,
+  allowEmptyBars: boolean
+): RhythmicEvent[][] =>
+  rhythmicUnit.map((subdivision: number) =>
+    getRhythmicEvents(subdivision, allowEmptyBars)
+  );
 
 export const sum = (accumulator: number, currentValue: number) =>
   accumulator + currentValue;
 
 export const getRandomTupletValue = (
-  rhythmicGroups: RhythmicUnit[]
-): TupletValues => {
-  //obtain a random time signature or tuplet value from all possible user-entered values
-  const randomUnit: RhythmicUnit =
-    rhythmicGroups[Math.floor(Math.random() * rhythmicGroups.length)];
-
-  return randomUnit.reduce(sum, 0) as TupletValues;
-};
+  rhythmicGroups: TupletValues[]
+): TupletValues =>
+  rhythmicGroups[Math.floor(Math.random() * rhythmicGroups.length)];
 
 export const getRandomTimeSig = (
   rhythmicGroups: RhythmicUnit[]
@@ -27,35 +35,56 @@ const getRandomRhythmicEvent = (): RhythmicEvent => {
   return (Math.floor(Math.random() * (max - min)) + min) as RhythmicEvent;
 };
 
-//Adds values to an array
 export const getRhythmicEvents = (
   max: number,
   allowEmptyBars: boolean
 ): RhythmicEvent[] => {
-  const ret = [...new Array(max)].map(() => getRandomRhythmicEvent());
+  const bar = [...new Array(max)].map(() => getRandomRhythmicEvent());
 
   if (!allowEmptyBars) {
     // if the bar is empty, return a new bar
-    const empty = ret.every((value) => value === 0);
+    const isBarEmpty = bar.every((value) => value === 0);
 
-    if (empty) {
+    if (isBarEmpty) {
       return getRhythmicEvents(max, allowEmptyBars);
     }
   }
 
-  return ret;
+  return bar;
 };
+
+const getRhthmicUnits =
+  (checkedRhythmicUnits: CheckedRhythmicUnits) => (unitKey: string) => {
+    if (checkedRhythmicUnits[unitKey as RhythmicUnitKeys]) {
+      return RHYTHMIC_UNITS[unitKey as RhythmicUnitKeys];
+    }
+  };
+
+const filterUndefinedRhythmicUnits = (
+  rhythmicUnit: RhythmicUnit | undefined
+): rhythmicUnit is RhythmicUnit => !!rhythmicUnit;
 
 export const getSelectedRhythmicUnits = (
   checkedRhythmicGroups: CheckedRhythmicUnits
 ) =>
   Object.keys(checkedRhythmicGroups)
-    .map((unitKey: string) => {
-      if (checkedRhythmicGroups[unitKey as RhythmicUnitKeys]) {
-        return RHYTHMIC_UNITS[unitKey as RhythmicUnitKeys];
-      }
-    })
-    .filter(
-      (rhythmicUnit: RhythmicUnit | undefined): rhythmicUnit is RhythmicUnit =>
-        !!rhythmicUnit
-    );
+    .map(getRhthmicUnits(checkedRhythmicGroups))
+    .filter(filterUndefinedRhythmicUnits);
+
+const filterUndefinedTupletValues = (
+  tupletValue: TupletValues | undefined
+): tupletValue is TupletValues => !!tupletValue;
+
+const getTupletValues =
+  (checkedTupletValues: CheckedTupletValues) => (tupletValue: string) => {
+    if (checkedTupletValues[parseInt(tupletValue) as TupletValues]) {
+      return parseInt(tupletValue) as TupletValues;
+    }
+  };
+
+export const getSelectedTupletValues = (
+  checkedTupletValues: CheckedTupletValues
+) =>
+  Object.keys(checkedTupletValues)
+    .map(getTupletValues(checkedTupletValues))
+    .filter(filterUndefinedTupletValues);

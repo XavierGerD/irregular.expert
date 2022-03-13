@@ -4,14 +4,14 @@ import { RootState } from "../../store/store";
 
 import { sum } from "../reducer/figuresUtils";
 import { selectIsRhythmicUnitChecked } from "../reducer/selectors";
-import { setCheckedRhythmicGroup } from "../reducer/slice";
+import { RhythmicSubdivision, setCheckedRhythmicGroup } from "../reducer/slice";
 import { RHYTHMIC_UNITS, RhythmicUnitKeys } from "../RhythmicUnits";
 
 interface IValueSelectorProps {
   unitKey: RhythmicUnitKeys;
 }
 
-const ValueSelector = ({ unitKey }: IValueSelectorProps) => {
+const BarValueSelector = ({ unitKey }: IValueSelectorProps) => {
   const dispatch = useDispatch();
 
   const isChecked = useSelector((state: RootState) =>
@@ -22,26 +22,40 @@ const ValueSelector = ({ unitKey }: IValueSelectorProps) => {
     dispatch(setCheckedRhythmicGroup({ path: unitKey, value: !isChecked }));
   }, [dispatch, isChecked]);
 
-  const subdivision = RHYTHMIC_UNITS[unitKey];
+  const subdivisions = RHYTHMIC_UNITS[unitKey];
 
   const sumValue = React.useMemo(
-    () => subdivision.reduce(sum, 0),
-    [subdivision]
+    () => subdivisions.reduce(sum, 0),
+    [subdivisions]
+  );
+
+  const subidivisionsIndicator = React.useMemo(
+    () =>
+      subdivisions.reduce(
+        (indicator: string, subdivision: RhythmicSubdivision, index) => {
+          if (index === subdivisions.length - 1) {
+            return `${indicator}${subdivision})`;
+          }
+          return `${indicator}${subdivision} + `;
+        },
+        " ("
+      ),
+    [unitKey]
   );
 
   return (
     <div>
       {sumValue}
-      {sumValue === 8 && " (4/4)"}
+      {subidivisionsIndicator}
       <input
         type="checkbox"
         onClick={onClick}
         defaultChecked={isChecked}
         className="checkbox"
-        id={"timeSigButton" + subdivision}
+        id={"timeSigButton" + subdivisions}
       />
     </div>
   );
 };
 
-export default ValueSelector;
+export default BarValueSelector;

@@ -6,8 +6,6 @@ import { IRhythmicEvent, Pitch } from "../../common/types";
 import { IDroneState } from "./slice";
 
 let playFrame: number;
-let timeRef: number;
-
 let countDownFrame: number;
 
 let currentBeat = 0;
@@ -55,7 +53,7 @@ export const startCountdown = (state: IDroneState) => {
 
   // Get rid of the redux proxies recursively.
   const parsed: IRhythmicEvent[] = JSON.parse(JSON.stringify(events));
-  requestAnimationFrame(countdown(parsed, timeRef ?? 0, clickInterval));
+  requestAnimationFrame(countdown(parsed, 0, clickInterval));
 
   state.looper.isPlaying = true;
 };
@@ -78,7 +76,6 @@ const countdown =
 
       countdownSound.play();
       currentBeat++;
-      timeRef = time;
       countDownFrame = requestAnimationFrame(
         countdown(events, time, clickInterval)
       );
