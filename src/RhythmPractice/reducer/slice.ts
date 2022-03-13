@@ -97,6 +97,13 @@ const rhythmPracticeSlice = createSlice({
     ) => {
       state.checkedRhythmicUnits[action.payload.path] = action.payload.value;
     },
+    stopExercise: (state) => {
+      state.bars = [];
+      state.repCount = 1;
+      state.phase = "stopped";
+      state.countDownCheck = false;
+      state.subdivisionCount = 1;
+    },
   },
 });
 
@@ -109,6 +116,7 @@ export const {
   setRepInput,
   setTempo,
   setCheckedRhythmicGroup,
+  stopExercise,
 } = rhythmPracticeSlice.actions;
 
 export default rhythmPracticeSlice.reducer;

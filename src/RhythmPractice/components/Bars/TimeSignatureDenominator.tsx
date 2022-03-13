@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { RootState } from "../../store/store";
-import { timeSignatureCodes } from "../../UnicodeAssignment";
-import { selectIsBarMode, selectTimeSignature } from "../reducer/selectors";
+import { RootState } from "../../../store/store";
+import { timeSignatureCodes } from "../../../UnicodeAssignment";
+import { selectIsBarMode, selectTimeSignature } from "../../reducer/selectors";
 
 const getTimeSignatureDenominator = (
   isBarMode: boolean,

@@ -1,28 +1,33 @@
 import * as React from "react";
 import { useDispatch } from "react-redux";
 
-import { handleStartExercise } from "../reducer/slice";
+import { handleStartExercise, stopExercise } from "../reducer/slice";
 import { instructions as genericInstructions } from "../instructions";
 import AllowEmptyBarsInput from "./Inputs/AllowEmptyBarsInput";
-import Bars from "./Bars";
+import Bars from "./Bars/Bars";
 import GenericInstructions from "../../common/Instructions/Instructions";
 import Instructions from "./Instructions";
 import ModeSelector from "./Inputs/ModeSelector";
 import PlaybackAnswerInput from "./Inputs/PlaybackAnswerInput";
 import PlayEveryEighthInput from "./Inputs/PlayEveryEighthInput";
 import RepsInput from "./Inputs/RepsInput";
-import StaffLine from "./StaffLine";
+import StaffLine from "./Bars/StaffLine";
 import StartButton from "../../common/StartButton/StartButton";
 import TempoInput from "./Inputs/TempoInput";
 import ValueSelectors from "./ValueSelectors";
 
 import "./RhythmPractice.css";
+import StopButton from "../../common/StopButton/StopButton";
 
 const RhythmPractice = () => {
   const dispatch = useDispatch();
-  //   componentWillUnmount = () => {
-  //     this.stopExercise();
-  //   };
+
+  React.useEffect(
+    () => () => {
+      dispatch(stopExercise());
+    },
+    [dispatch]
+  );
 
   //   const playAndCount = () => {
   //     let now = new Date() / 1;
@@ -137,26 +142,12 @@ const RhythmPractice = () => {
   //     this.countDownFrame = requestAnimationFrame(this.countDown);
   //   };
 
-  //   const stopExercise = () => {
-  //     cancelAnimationFrame(this.countDownFrame);
-  //     cancelAnimationFrame(this.playAndCountFrame);
-  //     this.setState({
-  //       timeSignatures: [0, 0],
-  //       binaryFigures: [],
-  //       displayedFigures: [],
-  //       displayedTuplets: [],
-  //       started: false,
-  //       repCount: 1,
-  //       subdivisionCount: 1,
-  //       countDownCheck: false,
-  //       phase: "countdown",
-  //     });
-  //   };
-
-  const startExercise = React.useCallback(
+  const start = React.useCallback(
     () => dispatch(handleStartExercise()),
     [dispatch]
   );
+
+  const stop = React.useCallback(() => dispatch(stopExercise()), [dispatch]);
 
   return (
     <div className="rhythmContainer">
@@ -187,8 +178,8 @@ const RhythmPractice = () => {
         </div>
       </div>
       <div className="start-stop-container">
-        <StartButton onStart={startExercise} />
-        {/* <StopButton onStop={stopExercise} /> */}
+        <StartButton onStart={start} />
+        <StopButton onStop={stop} />
       </div>
       <Instructions />
     </div>

@@ -1,8 +1,8 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { singleStaff } from "../../UnicodeAssignment";
-import { selectHasStarted } from "../reducer/selectors";
+import { singleStaff } from "../../../UnicodeAssignment";
+import { selectHasStarted } from "../../reducer/selectors";
 
 const StaffLine = () => {
   const hasStarted = useSelector(selectHasStarted);

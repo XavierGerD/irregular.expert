@@ -1,12 +1,12 @@
 import * as React from "react";
 import { useSelector } from "react-redux";
 
-import { RootState } from "../../store/store";
+import { RootState } from "../../../store/store";
 import {
   timeSignatureCodes,
   TimeSignatureValues,
-} from "../../UnicodeAssignment";
-import { selectIsBarMode, selectTimeSignature } from "../reducer/selectors";
+} from "../../../UnicodeAssignment";
+import { selectIsBarMode, selectTimeSignature } from "../../reducer/selectors";
 
 const getTimeSignatureNumerator = (isBarMode: boolean, timeSignature: number) =>
   isBarMode && timeSignature === 8

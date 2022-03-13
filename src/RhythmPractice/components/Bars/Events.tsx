@@ -5,7 +5,7 @@ import {
   flagCodes,
   restCodes,
   BeamCodesValues,
-} from "../../UnicodeAssignment";
+} from "../../../UnicodeAssignment";
 
 interface IFirstProps {
   events: number[];
