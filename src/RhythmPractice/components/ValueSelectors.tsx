@@ -1,17 +1,36 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 
+import { tupletCodes, TupletValues } from "../../UnicodeAssignment";
+import { selectIsBarMode } from "../reducer/selectors";
 import { rhythmicUnitKeys, RhythmicUnitKeys } from "../RhythmicUnits";
-import ValueSelector from "./ValueSelector";
+import TupletValueSelector from "./TupletValueSelector";
+import BarValueSelector from "./ValueSelector";
 
-const ValueSelectors = () => (
-  <>
-    <div className="rp-controlitem">Values:</div>
-    <div className="rp-controlitem">
-      {rhythmicUnitKeys.map((unitKey: string) => (
-        <ValueSelector key={unitKey} unitKey={unitKey as RhythmicUnitKeys} />
-      ))}
+import "./ValueSelectors.css";
+
+const ValueSelectors = () => {
+  const isBarMode = useSelector(selectIsBarMode);
+
+  return (
+    <div className="value-selectors-container">
+      <div className="rp-controlitem value-selectors-title">Values</div>
+      <div className="value-selectors">
+        {isBarMode
+          ? rhythmicUnitKeys.map((unitKey: string) => (
+              <BarValueSelector
+                key={unitKey}
+                unitKey={unitKey as RhythmicUnitKeys}
+              />
+            ))
+          : Object.keys(tupletCodes).map((tupletKey: string) => (
+              <TupletValueSelector
+                key={tupletKey}
+                tupletValue={parseInt(tupletKey) as TupletValues}
+              />
+            ))}
+      </div>
     </div>
-  </>
-);
-
+  );
+};
 export default ValueSelectors;

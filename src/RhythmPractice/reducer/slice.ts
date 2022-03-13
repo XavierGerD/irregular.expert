@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { tupletCodes, TupletValues } from "../../UnicodeAssignment";
 
-import { RhythmicUnitKeys } from "../RhythmicUnits";
-import { startExercise } from "./play";
+import { rhythmicUnitKeys, RhythmicUnitKeys } from "../RhythmicUnits";
+import { getNewBars, getNewTupletBars } from "./barUtils";
+import {
+  getSelectedRhythmicUnits,
+  getSelectedTupletValues,
+} from "./figuresUtils";
 
 // A rhythmic event is a note or a rest for a given beat.
 export type RhythmicEvent = 0 | 1;
@@ -11,22 +16,33 @@ export type RhythmicSubdivision = 2 | 3;
 export type RhythmicUnit = RhythmicSubdivision[];
 
 export interface IRhythmPracticeState {
-  countDownCheck: boolean;
   phase: RhythmPracticePhases;
-  repCount: number;
-  bars: IBar[];
+  bars: (IBar | ITuplet)[];
   checkedRhythmicUnits: CheckedRhythmicUnits;
-  subdivisionCount: number;
+  checkedTupletValues: CheckedTupletValues;
   userInput: IUserInput;
 }
 
-export interface IBar {
+interface IRhythmicEvents {
   rhythmicEvents: RhythmicEvent[][];
   timeSignature: number;
 }
 
+export interface IBar extends IRhythmicEvents {
+  type: "bar";
+  subdivisions: RhythmicUnit;
+}
+export interface ITuplet extends IRhythmicEvents {
+  type: "tuplet";
+  subdivisions: TupletValues;
+}
+
 export type RhythmPracticeModes = "bar" | "tuplet";
-type RhythmPracticePhases = "stopped" | "countdown" | "firstFigure" | "play";
+export type RhythmPracticePhases =
+  | "stopped"
+  | "countdown"
+  | "firstFigure"
+  | "play";
 
 interface IUserInput {
   allowEmptyBars: boolean;
@@ -38,21 +54,35 @@ interface IUserInput {
 }
 
 export type CheckedRhythmicUnits = { [key in RhythmicUnitKeys]: boolean };
+export type CheckedTupletValues = { [key in TupletValues]: boolean };
+
+const getCheckedRhythmicUnits = (): CheckedRhythmicUnits => {
+  const mapped = new Map<RhythmicUnitKeys, boolean>(
+    rhythmicUnitKeys.map((key: RhythmicUnitKeys, index: number) => [
+      key,
+      index === 0 ? true : false,
+    ])
+  );
+
+  return Object.fromEntries(mapped) as CheckedRhythmicUnits;
+};
+
+const getCheckedTupletValues = (): CheckedTupletValues => {
+  const mapped = new Map<TupletValues, boolean>(
+    Object.keys(tupletCodes).map((key: string, index: number) => [
+      parseInt(key) as TupletValues,
+      index === 0 ? true : false,
+    ])
+  );
+
+  return Object.fromEntries(mapped) as CheckedTupletValues;
+};
 
 const createInitialState = (): IRhythmPracticeState => ({
-  countDownCheck: false,
   phase: "stopped",
-  repCount: 1,
   bars: [],
-  subdivisionCount: 1,
-  checkedRhythmicUnits: {
-    three: true,
-    four: false,
-    five_1: false,
-    six: false,
-    seven_1: false,
-    eight: false,
-  },
+  checkedRhythmicUnits: getCheckedRhythmicUnits(),
+  checkedTupletValues: getCheckedTupletValues(),
   userInput: {
     allowEmptyBars: false,
     mode: "bar",
@@ -68,11 +98,68 @@ interface ISetCheckedRhythmicGroupActionPayload {
   value: boolean;
 }
 
+interface ISetCheckedTupletValueActionPayload {
+  path: TupletValues;
+  value: boolean;
+}
+
+const getAreAnyUnitsSelected = (
+  checkedRhythmicGroups: CheckedRhythmicUnits | CheckedTupletValues
+) => Object.values(checkedRhythmicGroups).some((value: boolean) => value);
+
 const rhythmPracticeSlice = createSlice({
   name: "rhythmPractice",
   initialState: createInitialState(),
   reducers: {
-    startExercise,
+    startExercise: (state) => {
+      const { phase, userInput, checkedRhythmicUnits, checkedTupletValues } =
+        state;
+      const { mode, allowEmptyBars } = userInput;
+      const isBarMode = mode === "bar";
+
+      const checkedGroups = isBarMode
+        ? checkedRhythmicUnits
+        : checkedTupletValues;
+
+      const areAnyUnitsSelected = getAreAnyUnitsSelected(checkedGroups);
+
+      if (areAnyUnitsSelected && phase === "stopped") {
+        const newBars = isBarMode
+          ? getNewBars(
+              2,
+              getSelectedRhythmicUnits(checkedRhythmicUnits),
+              allowEmptyBars
+            )
+          : getNewTupletBars(
+              2,
+              getSelectedTupletValues(checkedTupletValues),
+              allowEmptyBars
+            );
+
+        state.bars = newBars;
+        state.phase = "countdown";
+      }
+    },
+    loadNewImage: (state) => {
+      const { checkedRhythmicUnits, userInput, bars, checkedTupletValues } =
+        state;
+      const { mode, allowEmptyBars } = userInput;
+      const isBarMode = mode === "bar";
+
+      const newBar = isBarMode
+        ? getNewBars(
+            1,
+            getSelectedRhythmicUnits(checkedRhythmicUnits),
+            allowEmptyBars
+          )
+        : getNewTupletBars(
+            1,
+            getSelectedTupletValues(checkedTupletValues),
+            allowEmptyBars
+          );
+
+      state.bars = bars.slice(1).concat(newBar);
+    },
     setPlayAnswer: (state, action: PayloadAction<boolean>) => {
       state.userInput.playAnswer = action.payload;
     },
@@ -97,25 +184,34 @@ const rhythmPracticeSlice = createSlice({
     ) => {
       state.checkedRhythmicUnits[action.payload.path] = action.payload.value;
     },
+    setCheckedTupletValue: (
+      state,
+      action: PayloadAction<ISetCheckedTupletValueActionPayload>
+    ) => {
+      state.checkedTupletValues[action.payload.path] = action.payload.value;
+    },
+    setPhase: (state, action: PayloadAction<RhythmPracticePhases>) => {
+      state.phase = action.payload;
+    },
     stopExercise: (state) => {
       state.bars = [];
-      state.repCount = 1;
       state.phase = "stopped";
-      state.countDownCheck = false;
-      state.subdivisionCount = 1;
     },
   },
 });
 
 export const {
-  startExercise: handleStartExercise,
+  loadNewImage,
   setAllowEmptyBars,
+  setCheckedRhythmicGroup,
+  setCheckedTupletValue,
   setMode,
+  setPhase,
   setPlayAnswer,
   setPlayEveryEighth,
   setRepInput,
   setTempo,
-  setCheckedRhythmicGroup,
+  startExercise: handleStartExercise,
   stopExercise,
 } = rhythmPracticeSlice.actions;
 

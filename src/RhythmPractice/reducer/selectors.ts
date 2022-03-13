@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "../../store/store";
+import { TupletValues } from "../../UnicodeAssignment";
 import { RhythmicUnitKeys } from "../RhythmicUnits";
 
 const _selectData = (state: RootState) => state.rhythmPracticeSlice;
@@ -62,4 +63,10 @@ export const selectIsRhythmicUnitChecked = createSelector(
   _selectData,
   (state: RootState, key: RhythmicUnitKeys) => key,
   (data, key) => data.checkedRhythmicUnits[key]
+);
+
+export const selectIsTupletValueChecked = createSelector(
+  _selectData,
+  (state: RootState, key: TupletValues) => key,
+  (data, key) => data.checkedTupletValues[key]
 );

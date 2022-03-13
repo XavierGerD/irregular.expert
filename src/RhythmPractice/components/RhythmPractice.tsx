@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { handleStartExercise, stopExercise } from "../reducer/slice";
 import { instructions as genericInstructions } from "../instructions";
@@ -15,13 +15,15 @@ import StaffLine from "./Bars/StaffLine";
 import StartButton from "../../common/StartButton/StartButton";
 import TempoInput from "./Inputs/TempoInput";
 import ValueSelectors from "./ValueSelectors";
+import StopButton from "../../common/StopButton/StopButton";
+import { countDown, resetExercise } from "../reducer/play";
+import { selectTempo } from "../reducer/selectors";
 
 import "./RhythmPractice.css";
-import StopButton from "../../common/StopButton/StopButton";
 
 const RhythmPractice = () => {
   const dispatch = useDispatch();
-
+  const tempo = useSelector(selectTempo);
   React.useEffect(
     () => () => {
       dispatch(stopExercise());
@@ -29,125 +31,16 @@ const RhythmPractice = () => {
     [dispatch]
   );
 
-  //   const playAndCount = () => {
-  //     let now = new Date() / 1;
-  //     let clickInterval;
-  //     let repCount = this.state.repCount;
-  //     let subdivisionCount = this.state.subdivisionCount;
-  //     let divider;
-  //     let unevenBeat = false;
-  //     if (this.state.mode === "bar") {
-  //       // set an event every subdivision of the pulse
-  //       divider = 2;
-  //       unevenBeat = subdivisionCount % 2 === 1;
-  //       // console.log("uneven beat?", unevenBeat);
-  //     } else if (this.state.mode === "tuplet") {
-  //       //divide whole bar by the time signature
-  //       divider = this.state.timeSignatures[0];
-  //     }
-  //     // set the frequency of each potential click
-  //     clickInterval = 60000 / parseInt(this.state.tempoInput) / divider;
-  //     if (now - this.state.lastBeat > clickInterval) {
-  //       if (this.state.repCount === 1 && this.state.phase === "play") {
-  //         //load new image and ensure a new one isn't loaded right after
-  //         this.loadNewImage();
-  //         this.setState({ phase: "firstFigure" });
-  //       }
+  const start = React.useCallback(() => {
+    dispatch(handleStartExercise());
+    const clickInterval = 60000 / tempo;
+    requestAnimationFrame(countDown(0, clickInterval));
+  }, [dispatch, tempo]);
 
-  //       if (!this.state.playEveryEighth && this.state.timeSignatures[0] === 6) {
-  //         if (subdivisionCount === 1) {
-  //           blip02.play();
-  //         } else if (subdivisionCount === 4) {
-  //           blip01.play();
-  //         }
-  //       } else if (!this.state.playEveryEighth && unevenBeat) {
-  //         // play only a click on uneven beats (strong beats)
-  //         if (subdivisionCount === 1) {
-  //           blip02.play();
-  //         } else {
-  //           blip01.play();
-  //         }
-  //       } else if (!this.state.playEveryEighth && this.state.mode === "tuplet") {
-  //         // play only a click on the first beat of the bar
-  //         if (subdivisionCount === 1) {
-  //           blip02.play();
-  //         }
-  //       } else if (this.state.playEveryEighth) {
-  //         // play a click on every subdivision
-  //         if (subdivisionCount === 1) {
-  //           blip02.play();
-  //         } else {
-  //           blip01.play();
-  //         }
-  //       }
-
-  //       if (this.state.playAnswer) {
-  //         if (this.state.binaryFigures[0][subdivisionCount - 1] === 1) {
-  //           clap.play();
-  //         }
-  //       }
-
-  //       subdivisionCount++;
-  //       if (subdivisionCount > this.state.timeSignatures[0]) {
-  //         // increase the repcount and reset subdivision counter
-  //         repCount++;
-  //         subdivisionCount = 1;
-  //       }
-  //       if (repCount > parseInt(this.state.repInput)) {
-  //         //reset repcount and prepare to load new image at next loop
-  //         // console.log("resetting repcount!");
-  //         repCount = 1;
-  //         if (this.state.phase === "firstFigure") {
-  //           this.setState({ phase: "play" });
-  //         }
-  //       }
-  //       this.playAndCountFrame = requestAnimationFrame(this.playAndCount);
-  //       let lastBeat = new Date() / 1;
-  //       this.setState({ repCount, lastBeat, subdivisionCount });
-  //       return;
-  //     }
-  //     this.playAndCountFrame = requestAnimationFrame(this.playAndCount);
-  //   };
-
-  //   const countDown = () => {
-  //     //if countdown is already done, return
-  //     if (this.state.countDownCheck) return;
-  //     //set the current date to check if enough time has passed
-  //     let now = new Date() / 1;
-  //     //number of clicks per minute
-  //     let clickInterval = 60000 / parseInt(this.state.tempoInput);
-  //     if (now - this.state.lastBeat > clickInterval) {
-  //       let repCount = this.state.repCount;
-  //       if (repCount > 4) {
-  //         //if the 4 beat countdown is over, reset repcount and start the exercise
-  //         repCount = 1;
-  //         let countDownCheck = true;
-  //         this.setState({
-  //           repCount,
-  //           countDownCheck,
-  //           phase: "firstFigure",
-  //         });
-  //         this.playAndCount();
-  //         return;
-  //       }
-  //       countdownSound.play();
-
-  //       repCount++;
-  //       // if the coundown isn't over, set the time of the last beat and call the function again
-  //       let lastBeat = new Date() / 1;
-  //       this.countDownFrame = requestAnimationFrame(this.countDown);
-  //       this.setState({ repCount, lastBeat });
-  //       return;
-  //     }
-  //     this.countDownFrame = requestAnimationFrame(this.countDown);
-  //   };
-
-  const start = React.useCallback(
-    () => dispatch(handleStartExercise()),
-    [dispatch]
-  );
-
-  const stop = React.useCallback(() => dispatch(stopExercise()), [dispatch]);
+  const stop = React.useCallback(() => {
+    dispatch(stopExercise());
+    resetExercise();
+  }, [dispatch]);
 
   return (
     <div className="rhythmContainer">
@@ -158,10 +51,10 @@ const RhythmPractice = () => {
       </div>
       <div className="rhythmContainer">
         <div className="rp-controlpanel">
+          <ValueSelectors />
           <div className="rp-panelsection">
             <TempoInput />
             <RepsInput />
-            <ValueSelectors />
           </div>
           <div style={{ marginLeft: "20px" }} className="rp-panelsection">
             <ModeSelector />
